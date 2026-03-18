@@ -1,64 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-site-verification" content="JuGArNnQnR7vCtQg4Her23qhff86HxiKY5zWywZlAHw" />
-    <title>Axiom Forensics | AI Audit & Compliance</title>
+<script>
+  document.addEventListener('submit', function (e) {
+    const form = e.target;
     
-    <script type="module" crossorigin src="./index-cnhgui-a.js"></script>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
+    // 1. Identify the form (Looking for any form with an email or company field)
+    if (form.innerHTML.toLowerCase().includes('firm') || form.innerHTML.toLowerCase().includes('email')) {
+      e.preventDefault(); 
+      console.log("Axiom Form Detected. Starting Zoho Transfer...");
 
-    <script>
-      // 1. Netlify Identity Login Logic
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
+      const formData = new FormData(form);
+      const zohoData = new URLSearchParams();
 
-      // 2. Zoho CRM "Magic Script" - Hijacks your React form and sends data to Zoho
-      document.addEventListener('submit', function (e) {
-        const form = e.target;
-        
-        // This looks for your 'Request Assessment' form specifically
-        if (form.innerHTML.includes('FIRM NAME') || form.innerHTML.includes('Firm Name')) {
-          e.preventDefault(); 
+      // Your Unique Zoho IDs
+      zohoData.append('xnQsjsdp', '8e96272951d944b5fee296aecd1e65b11bce363cc05adf7646b0d402600fe77a');
+      zohoData.append('xmIwtLD', 'bc0bfa01c482441021b4fed4066fe0e35fa4962128b024791bfdbc44d4eec91d1e5cef7222489fde0e7ba6628fdea5b5');
+      zohoData.append('actionType', 'TGVhZHM=');
+      zohoData.append('returnURL', 'https://axiomforensics.cloud');
 
-          const formData = new FormData(form);
-          const zohoData = new URLSearchParams();
+      // 2. SMART MAPPING (Tries multiple possible names used in React)
+      const company = formData.get('firmName') || formData.get('Company') || formData.get('firm_name') || 'Axiom Website Lead';
+      const lastName = formData.get('primaryContact') || formData.get('Last Name') || formData.get('contact_name') || 'Legal Professional';
+      const email = formData.get('firmEmail') || formData.get('Email') || formData.get('email');
+      const description = 'Firm Size: ' + (formData.get('firmSize') || 'N/A') + ' | Jurisdiction: ' + (formData.get('jurisdiction') || 'N/A');
 
-          // Your unique Zoho Security IDs
-          zohoData.append('xnQsjsdp', '8e96272951d944b5fee296aecd1e65b11bce363cc05adf7646b0d402600fe77a');
-          zohoData.append('xmIwtLD', 'bc0bfa01c482441021b4fed4066fe0e35fa4962128b024791bfdbc44d4eec91d1e5cef7222489fde0e7ba6628fdea5b5');
-          zohoData.append('actionType', 'TGVhZHM=');
-          zohoData.append('returnURL', 'https://axiomforensics.cloud');
+      zohoData.append('Company', company);
+      zohoData.append('Last Name', lastName);
+      zohoData.append('Email', email);
+      zohoData.append('Description', description);
 
-          // Mapping your site's fields to Zoho's database
-          zohoData.append('Company', formData.get('firmName') || formData.get('Company') || 'New Lead');
-          zohoData.append('Last Name', formData.get('primaryContact') || formData.get('Last Name') || 'Legal Lead');
-          zohoData.append('Email', formData.get('firmEmail') || formData.get('Email'));
-          zohoData.append('Description', 'Size: ' + formData.get('firmSize') + ' | Jurisdiction: ' + formData.get('jurisdiction'));
+      console.log("Sending data to Zoho:", Object.fromEntries(zohoData));
 
-          // Send data to Zoho CRM
-          fetch('https://crm.zoho.com/crm/WebToLeadForm', {
-            method: 'POST',
-            mode: 'no-cors', 
-            body: zohoData
-          }).then(() => {
-            alert('Axiom Forensics: Assessment Request Received! We will contact you shortly.');
-            window.location.reload();
-          });
-        }
+      // 3. Send to Zoho
+      fetch('https://crm.zoho.com/crm/WebToLeadForm', {
+        method: 'POST',
+        mode: 'no-cors', 
+        body: zohoData
+      }).then(() => {
+        alert('Axiom Forensics: Assessment Request Received!');
+        window.location.reload();
+      }).catch(err => {
+        console.error("Zoho Error:", err);
       });
-    </script>
-  </body>
-</html>
+    }
+  });
+</script>
