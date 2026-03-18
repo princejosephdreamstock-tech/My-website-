@@ -8,61 +8,53 @@
     <title>Axiom Forensics | AI Audit & Compliance</title>
     
     <script type="module" crossorigin src="./index-cnhgui-a.js"></script>
-    
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <div id="root"></div>
 
     <script>
-      // 1. Netlify Identity Logic
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
+      // 1. THE PRICING FIX: Automatically swaps $ to £ on page load
+      const fixPrices = () => {
+        const bodyText = document.body.innerHTML;
+        // Changes $800 to £4,700 and $1,000 to a higher realistic amount (e.g., £6,500)
+        document.body.innerHTML = bodyText
+          .replace(/\$800/g, '£4,700')
+          .replace(/\$1,000/g, '£6,500')
+          .replace(/\$/g, '£');
+      };
+      // Run the price fix 2 seconds after the site loads
+      setTimeout(fixPrices, 2000);
 
-      // 2. Zoho CRM "Deep Search" Script
+      // 2. THE ZOHO FIX: Forces the "Assessment" form to talk to Zoho
       document.addEventListener('submit', function (e) {
         const form = e.target;
-        
-        // This looks for your 'Request Assessment' form
-        if (form.innerHTML.toLowerCase().includes('firm') || form.innerHTML.toLowerCase().includes('email')) {
-          e.preventDefault(); 
+        e.preventDefault(); 
 
-          const formData = new FormData(form);
-          const zohoData = new URLSearchParams();
+        const formData = new FormData(form);
+        const zohoData = new URLSearchParams();
 
-          // Your Unique Zoho IDs
-          zohoData.append('xnQsjsdp', '8e96272951d944b5fee296aecd1e65b11bce363cc05adf7646b0d402600fe77a');
-          zohoData.append('xmIwtLD', 'bc0bfa01c482441021b4fed4066fe0e35fa4962128b024791bfdbc44d4eec91d1e5cef7222489fde0e7ba6628fdea5b5');
-          zohoData.append('actionType', 'TGVhZHM=');
-          zohoData.append('returnURL', 'https://axiomforensics.cloud');
+        // Your Unique Zoho Security IDs
+        zohoData.append('xnQsjsdp', '8e96272951d944b5fee296aecd1e65b11bce363cc05adf7646b0d402600fe77a');
+        zohoData.append('xmIwtLD', 'bc0bfa01c482441021b4fed4066fe0e35fa4962128b024791bfdbc44d4eec91d1e5cef7222489fde0e7ba6628fdea5b5');
+        zohoData.append('actionType', 'TGVhZHM=');
+        zohoData.append('returnURL', 'https://axiomforensics.cloud');
 
-          // Mapping your site's names to Zoho's names
-          const company = formData.get('firmName') || formData.get('Company') || 'Axiom Lead';
-          const lastName = formData.get('primaryContact') || formData.get('Last Name') || 'Legal Pro';
-          const email = formData.get('firmEmail') || formData.get('Email');
+        // Mapping whatever fields are found to Zoho
+        zohoData.append('Company', formData.get('firmName') || formData.get('Company') || 'New Website Lead');
+        zohoData.append('Last Name', formData.get('primaryContact') || formData.get('Last Name') || 'Lead');
+        zohoData.append('Email', formData.get('firmEmail') || formData.get('Email'));
+        zohoData.append('Description', 'Firm Size: ' + formData.get('firmSize') + ' | Jurisdiction: ' + formData.get('jurisdiction'));
 
-          zohoData.append('Company', company);
-          zohoData.append('Last Name', lastName);
-          zohoData.append('Email', email);
-          zohoData.append('Description', 'Size: ' + (formData.get('firmSize') || 'N/A'));
-
-          fetch('https://crm.zoho.com/crm/WebToLeadForm', {
-            method: 'POST',
-            mode: 'no-cors', 
-            body: zohoData
-          }).then(() => {
-            alert('Axiom Forensics: Assessment Request Received!');
-            window.location.reload();
-          });
-        }
-      });
+        fetch('https://crm.zoho.com/crm/WebToLeadForm', {
+          method: 'POST',
+          mode: 'no-cors', 
+          body: zohoData
+        }).then(() => {
+          alert('Axiom Forensics: Request Received! Check your Zoho CRM.');
+          window.location.reload();
+        });
+      }, true); // The 'true' here is the magic—it catches the click before React can block it.
     </script>
   </body>
 </html>
