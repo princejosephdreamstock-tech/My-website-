@@ -1,42 +1,35 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
     <meta name="google-site-verification" content="JuGArNnQnR7vCtQg4Her23qhff86HxiKY5zWywZlAHw" />
-    
     <title>Axiom Forensics | AI Audit & Article 14 Compliance</title>
+    <meta name="description" content="Axiom Forensics audits AI systems — identifying Article 14 and Article 50 exposure before the August 2, 2026 deadline." />
+    
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="module" crossorigin src="/assets/index-CnhguI-a.js"></script>
   </head>
   <body>
     <div id="root"></div>
+
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
+
     <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
         });
       }
-    });
-  }
-</script>
-  </body>
-</html>
-
-    <meta name="google-site-verification" content="JuGArNnQnR7vCtQg4Her23qhff86HxiKY5zWywZlAHw" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Axiom Forensics — AI Compliance Audits for Insurance & Legal Firms</title>
-    <meta name="description" content="Axiom Forensics audits AI systems used by insurance and law firms — identifying Article 14 and Article 50 exposure before the August 2, 2026 enforcement deadline." />
-  </head>
-  <body>
-    <div id="root"></div>
+    </script>
   </body>
 </html>
