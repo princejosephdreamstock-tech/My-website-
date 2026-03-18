@@ -14,41 +14,38 @@
     <div id="root"></div>
 
     <script>
-      // 1. SURGICAL PRICING FIX: Matches your exact request (€4,500 and €6,500)
-      const fixAxiomPricing = () => {
+      // 1. SMART PRICE FIX: Changes specific numbers without breaking buttons
+      const updateAxiomPricing = () => {
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
         let node;
         while(node = walker.nextNode()) {
           let text = node.nodeValue;
           
-          // Fix 'Emergency Protocol': Change the current 6,500 to 4,500
-          if (text.includes('6,500')) {
-             node.nodeValue = text.replace('6,500', '4,500').replace('$', '€').replace('£', '€');
-          } 
-          // Fix 'Continuous Assurance': Change the current 800 to 6,500
-          else if (text.includes('800')) {
-             node.nodeValue = text.replace('800', '6,500').replace('$', '€').replace('£', '€');
-          }
-          // Catch any leftover original values (1,500) and make them 4,500
-          else if (text.includes('1,500')) {
-             node.nodeValue = text.replace('1,500', '4,500').replace('$', '€').replace('£', '€');
-          }
-          // Ensure all symbols are Euro
-          else if (text.includes('$') || text.includes('£')) {
-             node.nodeValue = text.replace('$', '€').replace('£', '€');
+          // Order is important: Fix the higher price first to avoid double-swapping
+          if (text.includes('4,500')) {
+            node.nodeValue = text.replace('4,500', '6,500').replace('$', '€').replace('£', '€');
+          } else if (text.includes('1,500')) {
+            node.nodeValue = text.replace('1,500', '4,500').replace('$', '€').replace('£', '€');
+          } else if (text.includes('$') || text.includes('£')) {
+            node.nodeValue = text.replace('$', '€').replace('£', '€');
           }
         }
       };
 
-      // Runs every 500ms for 5 seconds to stay ahead of React
-      const runFix = setInterval(fixAxiomPricing, 500);
-      setTimeout(() => clearInterval(runFix), 5000);
+      // Run every second for the first 5 seconds to catch React loading
+      const pricingInterval = setInterval(updateAxiomPricing, 1000);
+      setTimeout(() => clearInterval(pricingInterval), 5000);
 
-      // 2. SAFE ZOHO INTERCEPTION: Captures the form without breaking site links
+      // 2. TARGETED ZOHO FIX: Only intercepts the form, leaves links alone
       document.addEventListener('submit', function (e) {
         const form = e.target;
-        if (form.innerHTML.includes('FIRM NAME') || form.innerHTML.includes('Firm Name')) {
+        
+        // ONLY intercept if the form contains these specific words
+        const isAssessmentForm = form.innerHTML.includes('FIRM NAME') || form.innerHTML.includes('Firm Name');
+        
+        if (isAssessmentForm) {
           e.preventDefault(); 
+          console.log("Sending Assessment to Zoho...");
 
           const formData = new FormData(form);
           const zohoData = new URLSearchParams();
@@ -58,10 +55,10 @@
           zohoData.append('actionType', 'TGVhZHM=');
           zohoData.append('returnURL', 'https://axiomforensics.cloud');
 
-          zohoData.append('Company', formData.get('firmName') || formData.get('Company') || 'Axiom Lead');
+          zohoData.append('Company', formData.get('firmName') || formData.get('Company') || 'Axiom Website Lead');
           zohoData.append('Last Name', formData.get('primaryContact') || formData.get('Last Name') || 'Legal Pro');
           zohoData.append('Email', formData.get('firmEmail') || formData.get('Email'));
-          zohoData.append('Description', 'Size: ' + (formData.get('firmSize') || 'N/A') + ' | Jurisdiction: ' + (formData.get('jurisdiction') || 'N/A'));
+          zohoData.append('Description', 'Size: ' + formData.get('firmSize') + ' | Jurisdiction: ' + formData.get('jurisdiction'));
 
           fetch('https://crm.zoho.com/crm/WebToLeadForm', {
             method: 'POST',
