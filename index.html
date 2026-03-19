@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axiom Forensics — AI Compliance Audits for Insurance & Law Firms</title>
+<meta name="description" content="Axiom Forensics audits AI systems used by insurance and law firms. Article 14 and Article 50 compliance documentation delivered in 48 hours before the August 2, 2026 enforcement deadline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;--bone:#F0EDE6;--dim:#A8A49C;--red:#C0392B;
+  --border:rgba(240,237,230,0.12);--grid:rgba(240,237,230,0.05);
+  --mono:'DM Mono',monospace;--serif:'Instrument Serif',serif;--sans:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--bone);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;background:rgba(8,8,8,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;color:var(--bone)}
+.nav-mark{width:28px;height:28px;border:1.5px solid var(--bone);display:flex;align-items:center;justify-content:center;font-size:11px}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--dim);text-decoration:none;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:color 0.2s}
+.nav-links a:hover{color:var(--bone)}
+.nav-cta{background:var(--bone);color:var(--black);border:none;padding:8px 18px;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.nav-cta:hover{background:#d4d0c9}
+
+/* PAGES */
+.page{display:none;position:relative;z-index:1}
+.page.active{display:block}
+
+/* THREAT BAR */
+.threat-bar{background:rgba(192,57,43,0.1);border-bottom:1px solid rgba(192,57,43,0.3);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:60px}
+.threat-text{font-size:12px;letter-spacing:0.06em;color:var(--dim)}
+.threat-text strong{color:var(--bone)}
+.threat-penalty{font-size:11px;letter-spacing:0.1em;color:var(--red);font-weight:500;white-space:nowrap}
+
+/* HERO */
+.hero{max-width:1200px;margin:0 auto;padding:80px 40px 60px;border-bottom:1px solid var(--border)}
+.hero-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:5px 12px;margin-bottom:40px}
+.pulse{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-headline{font-family:var(--serif);font-size:clamp(44px,7vw,88px);line-height:1.02;font-weight:400;margin-bottom:28px;max-width:860px}
+.hero-headline em{font-style:italic;color:var(--dim)}
+.hero-sub{font-size:14px;color:var(--dim);max-width:540px;line-height:1.85;margin-bottom:40px}
+
+/* FEAR BLOCK */
+.fear-block{background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.2);padding:24px 28px;margin-bottom:40px;max-width:680px}
+.fear-block p{font-size:13px;color:var(--dim);line-height:1.8}
+.fear-block p strong{color:var(--bone)}
+.fear-number{font-family:var(--sans);font-size:42px;font-weight:800;color:var(--red);display:block;margin-bottom:4px}
+.fear-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim)}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:var(--bone);color:var(--black);border:none;padding:14px 28px;font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;text-decoration:none;display:inline-block}
+.btn-primary:hover{background:#d4d0c9}
+.btn-outline{background:transparent;color:var(--bone);border:1px solid var(--border);padding:14px 28px;font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:border-color 0.2s;text-decoration:none;display:inline-block}
+.btn-outline:hover{border-color:var(--bone)}
+
+/* COUNTDOWN */
+.countdown-wrap{border-top:1px solid var(--border);padding-top:40px;margin-top:48px}
+.countdown-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
+.countdown{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start}
+.cd-unit{display:flex;flex-direction:column;gap:4px}
+.cd-num{font-family:var(--sans);font-size:clamp(32px,5vw,52px);font-weight:800;line-height:1;letter-spacing:-0.02em}
+.cd-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim)}
+.cd-sep{font-family:var(--sans);font-size:44px;font-weight:300;color:var(--border);margin-top:2px}
+
+/* CAPACITY BLOCK */
+.capacity{margin-top:24px;font-size:12px;color:var(--dim);border-left:2px solid var(--red);padding-left:16px;line-height:1.7}
+.capacity strong{color:var(--bone)}
+
+/* SECTION */
+.section{max-width:1200px;margin:0 auto;padding:80px 40px}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:48px;gap:20px;flex-wrap:wrap}
+.section-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim)}
+.section-title{font-family:var(--sans);font-size:clamp(26px,3.5vw,40px);font-weight:700;letter-spacing:-0.01em}
+
+/* PEER PRESSURE BAR */
+.peer-bar{background:rgba(240,237,230,0.03);border:1px solid var(--border);padding:20px 28px;margin-bottom:48px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.peer-stat{text-align:center;flex:1;min-width:120px}
+.peer-num{font-family:var(--sans);font-size:28px;font-weight:800;color:var(--bone);display:block}
+.peer-desc{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-top:4px;display:block}
+.peer-divider{width:1px;height:40px;background:var(--border)}
+
+/* INTEL GRID */
+.intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--border)}
+.intel-card{background:var(--black);padding:32px;cursor:pointer;transition:background 0.2s}
+.intel-card:hover{background:rgba(240,237,230,0.03)}
+.card-meta{display:flex;justify-content:space-between;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
+.card-tag{color:var(--red)}
+.card-title{font-family:var(--serif);font-size:21px;line-height:1.3;margin-bottom:14px}
+.card-excerpt{font-size:12px;color:var(--dim);line-height:1.75;margin-bottom:22px}
+.card-read{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--bone);display:flex;gap:8px;align-items:center}
+
+/* BRIEF PREVIEW */
+.brief-section{border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:0}
+.brief-preview{padding:48px;border-right:1px solid var(--border)}
+.brief-doc{background:rgba(240,237,230,0.03);padding:24px;border:1px solid var(--border);margin-bottom:20px}
+.brief-doc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.brief-doc-title{font-family:var(--sans);font-size:13px;font-weight:700}
+.brief-doc-badge{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);border:1px solid rgba(192,57,43,0.4);padding:3px 8px}
+.brief-lines{display:flex;flex-direction:column;gap:6px}
+.brief-line{height:8px;background:var(--border);border-radius:2px}
+.brief-line.short{width:60%}
+.brief-line.medium{width:80%}
+.brief-capture{padding:48px;display:flex;flex-direction:column;justify-content:center}
+.capture-title{font-family:var(--serif);font-size:28px;line-height:1.25;margin-bottom:12px}
+.capture-desc{font-size:13px;color:var(--dim);line-height:1.8;margin-bottom:28px}
+.email-row{display:flex}
+.email-row input{flex:1;background:transparent;border:1px solid var(--border);border-right:none;color:var(--bone);padding:14px 16px;font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s}
+.email-row input:focus{border-color:var(--dim)}
+.email-row button{background:var(--bone);color:var(--black);border:none;padding:14px 20px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background 0.2s}
+.email-row button:hover{background:#d4d0c9}
+.capture-small{font-size:10px;color:var(--dim);margin-top:12px;letter-spacing:0.08em}
+
+/* ADVANTAGE GRID */
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--border)}
+.adv-card{background:var(--black);padding:36px 28px}
+.adv-num{font-family:var(--sans);font-size:44px;font-weight:800;margin-bottom:8px;letter-spacing:-0.02em}
+.adv-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.adv-desc{font-size:12px;color:var(--dim);line-height:1.75}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border)}
+.svc-card{background:var(--black);padding:40px 32px;display:flex;flex-direction:column;gap:18px}
+.svc-card.featured{background:rgba(240,237,230,0.03)}
+.svc-badge{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--red);border:1px solid rgba(192,57,43,0.4);padding:4px 10px;width:fit-content}
+.svc-name{font-family:var(--sans);font-size:22px;font-weight:700}
+.svc-price{font-family:var(--serif);font-size:44px;font-style:italic}
+.svc-price span{font-size:15px;font-style:normal;color:var(--dim)}
+.svc-desc{font-size:13px;color:var(--dim);line-height:1.75}
+.svc-features{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
+.svc-features li{font-size:12px;display:flex;gap:10px;color:var(--dim)}
+.svc-features li::before{content:'—';color:var(--bone);flex-shrink:0}
+
+/* COMPARE TABLE */
+.compare-wrap{overflow-x:auto;margin-top:48px}
+.compare-table{width:100%;border-collapse:collapse;font-size:12px}
+.compare-table th{text-align:left;padding:14px 20px;font-family:var(--mono);font-weight:400;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;font-size:10px;border-bottom:1px solid var(--border)}
+.compare-table th:not(:first-child){text-align:center}
+.compare-table td{padding:13px 20px;border-bottom:1px solid var(--border);color:var(--dim)}
+.compare-table td:not(:first-child){text-align:center}
+.compare-table td.yes{color:var(--bone)}
+.compare-table tr:hover td{background:rgba(240,237,230,0.02)}
+
+/* PHILOSOPHY */
+.manifesto-block{display:grid;grid-template-columns:160px 1fr;gap:48px;border-bottom:1px solid var(--border);padding:56px 40px;max-width:1200px;margin:0 auto}
+.manifesto-num{font-family:var(--sans);font-size:64px;font-weight:800;color:var(--border);line-height:1}
+.manifesto-content h3{font-family:var(--sans);font-size:22px;font-weight:700;margin-bottom:18px}
+.manifesto-content p{font-size:14px;color:var(--dim);line-height:1.9;max-width:580px}
+.manifesto-content p+p{margin-top:14px}
+
+/* INTAKE FORM */
+.intake-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);max-width:1200px;margin:0 auto}
+.intake-info{background:var(--black);padding:56px 44px}
+.intake-form{background:rgba(240,237,230,0.02);padding:56px 44px}
+.step-dots{display:flex;gap:8px;margin-bottom:36px}
+.step-dot{width:24px;height:2px;background:var(--border);transition:background 0.3s}
+.step-dot.active{background:var(--bone)}
+.form-step{display:none}
+.form-step.active{display:block}
+.form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:22px}
+.form-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim)}
+.form-input,.form-select,.form-textarea{background:transparent;border:1px solid var(--border);color:var(--bone);padding:12px 15px;font-family:var(--mono);font-size:13px;outline:none;transition:border-color 0.2s;width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--dim)}
+.form-select{appearance:none;cursor:pointer}
+.form-select option{background:#111}
+.form-textarea{resize:vertical;min-height:90px}
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cb-item{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:12px;color:var(--dim)}
+.cb-item input{cursor:pointer;accent-color:var(--bone)}
+.form-nav{display:flex;gap:14px;margin-top:6px}
+
+/* URGENCY BLOCK in intake */
+.urgency-note{background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.2);padding:18px;margin-bottom:20px;font-size:12px;color:var(--dim);line-height:1.75}
+.urgency-note strong{color:var(--bone)}
+
+/* PORTAL */
+.portal-shell{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px}
+.auth-box{width:100%;max-width:420px;border:1px solid var(--border);padding:44px}
+.auth-title{font-family:var(--sans);font-size:21px;font-weight:700;margin-bottom:6px}
+.auth-sub{font-size:12px;color:var(--dim);margin-bottom:32px}
+.dashboard{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px);margin-top:60px}
+.sidebar{border-right:1px solid var(--border);padding:36px 20px;background:rgba(240,237,230,0.01)}
+.sidebar-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;margin-top:28px}
+.sidebar-item{padding:9px 11px;font-size:12px;cursor:pointer;border:1px solid transparent;transition:border-color 0.2s;margin-bottom:3px}
+.sidebar-item:hover,.sidebar-item.active{border-color:var(--border);background:rgba(240,237,230,0.03)}
+.dash-main{padding:40px;overflow-y:auto}
+.stat-bar{display:flex;gap:1px;background:var(--border);margin-bottom:36px}
+.stat-card{background:var(--black);padding:22px 28px;flex:1}
+.stat-val{font-family:var(--sans);font-size:30px;font-weight:700;margin-bottom:3px}
+.stat-lbl{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim)}
+.audit-row{display:grid;grid-template-columns:1fr auto auto auto;gap:16px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border);font-size:12px}
+.audit-row:hover{background:rgba(240,237,230,0.02)}
+.pill{padding:4px 10px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase}
+.pill.active{background:rgba(192,57,43,0.15);color:var(--red);border:1px solid rgba(192,57,43,0.3)}
+.pill.complete{background:rgba(240,237,230,0.08);color:var(--bone);border:1px solid var(--border)}
+
+/* ARTICLE */
+.article-wrap{max-width:700px;margin:0 auto;padding:120px 40px 80px}
+.article-meta{display:flex;gap:20px;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:28px;flex-wrap:wrap}
+.article-tag-label{color:var(--red)}
+.article-title{font-family:var(--serif);font-size:clamp(30px,5vw,50px);line-height:1.15;margin-bottom:28px}
+.article-body{font-size:15px;line-height:1.9;color:var(--dim)}
+.article-body p{margin-bottom:22px}
+.article-body h2{font-family:var(--sans);font-size:21px;color:var(--bone);margin:36px 0 14px}
+.article-body strong{color:var(--bone)}
+.article-cta{margin-top:56px;padding:36px;border:1px solid var(--border)}
+.article-cta-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.article-cta-title{font-family:var(--serif);font-size:22px;margin-bottom:18px}
+.back-link{font-size:11px;color:var(--dim);letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;margin-bottom:22px;display:inline-block}
+.back-link:hover{color:var(--bone)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:32px;max-width:1200px;margin:0 auto}
+.footer-nodes{display:flex;flex-direction:column;gap:7px}
+.footer-node{display:flex;justify-content:space-between;gap:32px;font-size:11px;color:var(--dim)}
+.node-status{color:#2ECC71}
+.footer-brand{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-align:center}
+.footer-sub{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:4px}
+.footer-right{display:flex;justify-content:flex-end}
+
+/* NOTIFICATION */
+.notif{position:fixed;bottom:28px;right:36px;background:var(--bone);color:var(--black);padding:14px 22px;font-size:12px;letter-spacing:0.06em;z-index:999;animation:slideUp 0.3s ease;display:none;max-width:340px}
+.notif.show{display:block}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:60px 20px 48px}
+  .section{padding:60px 20px}
+  .intake-wrap{grid-template-columns:1fr}
+  .brief-section{grid-template-columns:1fr}
+  .brief-preview{border-right:none;border-bottom:1px solid var(--border)}
+  .manifesto-block{grid-template-columns:1fr;gap:20px;padding:40px 20px}
+  footer{grid-template-columns:1fr;text-align:center}
+  .footer-right{justify-content:center}
+  .dashboard{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .email-row{flex-direction:column}
+  .email-row input{border-right:1px solid var(--border);border-bottom:none}
+  .threat-bar{padding:12px 20px}
+  .checkbox-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showPage('home')">
+    <div class="nav-mark">AF</div>
+    <span>Axiom Forensics</span>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Intelligence</a></li>
+    <li><a onclick="showPage('philosophy')">Philosophy</a></li>
+    <li><a onclick="showPage('services')">Services</a></li>
+    <li><a onclick="showPage('portal')">Client Node</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('intake')">Request Assessment →</button>
+</nav>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+
+<!-- ============================================================ -->
+<!-- HOME PAGE -->
+<!-- ============================================================ -->
+<div class="page active" id="page-home">
+
+  <div class="threat-bar">
+    <div class="threat-text"><strong>DIRECTIVE 2026</strong> — EU AI Act enforcement for high-risk AI systems commences August 2, 2026. Annex III classification includes insurance underwriting, credit scoring, and legal AI tools.</div>
+    <div class="threat-penalty">PENALTY: UP TO €35M OR 7% GLOBAL TURNOVER</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-label"><span class="pulse"></span>Enforcement Active — 2026</div>
+    <h1 class="hero-headline">Is Your Firm a<br><em>Compliance Liability?</em></h1>
+    <p class="hero-sub">Axiom Forensics audits the AI systems used by insurance and law firms — identifying Article 14 and Article 50 exposure before the August 2, 2026 enforcement deadline. We produce the documentation regulators require. In 48 hours.</p>
+
+    <div class="fear-block">
+      <p>The EU AI Act does not distinguish between large enterprises and mid-market firms. A firm with 50 employees using AI for credit decisions carries <strong>the same documentation obligation as a FTSE 100 bank</strong>. The penalty for non-compliance is not a warning letter. It is <strong>up to €35 million or 7% of global annual turnover</strong> — whichever is higher. Most firms have neither the documentation nor the time left to produce it alone.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="showPage('intake')">Initiate Diagnostic Assessment →</button>
+      <button class="btn-outline" onclick="showPage('services')">View Services</button>
+    </div>
+
+    <div class="countdown-wrap">
+      <div class="countdown-label">Time Remaining Until EU AI Act Enforcement — August 2, 2026</div>
+      <div class="countdown">
+        <div class="cd-unit"><div class="cd-num" id="cd-days">000</div><div class="cd-label">Days</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-label">Hours</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-mins">00</div><div class="cd-label">Minutes</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit"><div class="cd-num" id="cd-secs">00</div><div class="cd-label">Seconds</div></div>
+      </div>
+      <div class="capacity">At current capacity, Axiom Forensics can complete <strong>14 full assessments</strong> before the August 2 deadline. <strong>6 slots remain.</strong> Firms that have not initiated an assessment by July 1 will not receive a completed report before enforcement begins.</div>
+    </div>
+  </div>
+
+  <!-- PEER PRESSURE -->
+  <div class="section" style="padding-bottom:0">
+    <div class="peer-bar">
+      <div class="peer-stat"><span class="peer-num">47</span><span class="peer-desc">Law firms have initiated AI compliance assessments since January 2026</span></div>
+      <div class="peer-divider"></div>
+      <div class="peer-stat"><span class="peer-num">£35M</span><span class="peer-desc">Maximum penalty exposure for a mid-market firm with undocumented AI deployment</span></div>
+      <div class="peer-divider"></div>
+      <div class="peer-stat"><span class="peer-num">48H</span><span class="peer-desc">Our turnaround from engagement to court-ready compliance report</span></div>
+      <div class="peer-divider"></div>
+      <div class="peer-stat"><span class="peer-num">Aug 2</span><span class="peer-desc">Hard enforcement date. No extensions. No grace period for firms already in scope.</span></div>
+    </div>
+  </div>
+
+  <!-- BRIEF DOWNLOAD -->
+  <div class="section">
+    <div class="brief-section">
+      <div class="brief-preview">
+        <div class="section-tag" style="margin-bottom:16px">Authority Asset // Free Download</div>
+        <div style="font-family:var(--serif);font-size:28px;line-height:1.2;margin-bottom:14px">The AI Act<br><em>Compliance Protocol</em></div>
+        <p style="font-size:13px;color:var(--dim);line-height:1.8;margin-bottom:24px">A 12-page forensic brief covering Article 14 obligations, Article 50 disclosure requirements, and a 12-point self-assessment checklist. Used by compliance officers at insurance carriers and law firms across the UK and EU.</p>
+        <div class="brief-doc">
+          <div class="brief-doc-header">
+            <div class="brief-doc-title">The AI Act Explainability Gap</div>
+            <div class="brief-doc-badge">WP-001</div>
+          </div>
+          <div class="brief-lines">
+            <div class="brief-line"></div>
+            <div class="brief-line medium"></div>
+            <div class="brief-line short"></div>
+            <div class="brief-line"></div>
+            <div class="brief-line medium"></div>
+            <div class="brief-line short"></div>
+            <div class="brief-line"></div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:var(--dim);letter-spacing:0.08em">Full Article 14 and Article 50 obligation coverage. Self-assessment checklist included. 12 pages. PDF format.</p>
+      </div>
+      <div class="brief-capture">
+        <div class="capture-title">Receive the<br><em>Protocol Document</em></div>
+        <p class="capture-desc">Enter your firm email. The brief is dispatched immediately. Zero-knowledge transmission. No marketing cadence. No follow-up unless you request it.</p>
+        <div class="email-row">
+          <input type="email" id="brief-email" placeholder="partner@yourfirm.com">
+          <button onclick="handleBriefCapture()">Receive Brief →</button>
+        </div>
+        <p class="capture-small">■ No marketing emails. ■ No data retention. ■ Firm email only.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTEL GRID -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">Intelligence Feed // Technical Log</div>
+        <div class="section-title">Forensic Notices</div>
+      </div>
+      <div style="font-size:11px;color:var(--dim);letter-spacing:0.1em">4 DISPATCHES</div>
+    </div>
+    <div class="intel-grid" id="intel-grid"></div>
+  </div>
+
+  <!-- ADVANTAGE -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">The Axiom Advantage</div>
+        <div class="section-title">Why Firms Choose Axiom</div>
+      </div>
+    </div>
+    <div class="adv-grid">
+      <div class="adv-card"><div class="adv-num">48H</div><div class="adv-label">Audit Turnaround</div><div class="adv-desc">Full diagnostic and compliance report delivered within 48 hours. Covers firms with up to 5 AI systems in scope.</div></div>
+      <div class="adv-card"><div class="adv-num">Aug 2</div><div class="adv-label">Hard Deadline</div><div class="adv-desc">We operate exclusively around the AI Act enforcement calendar. Every engagement is scoped to the deadline, not a theoretical timeline.</div></div>
+      <div class="adv-card"><div class="adv-num">100%</div><div class="adv-label">Document Coverage</div><div class="adv-desc">Every report maps directly to Article 14 and Article 50 regulatory language. Attorney-reviewable on receipt.</div></div>
+      <div class="adv-card"><div class="adv-num">◈</div><div class="adv-label">Zero Data Retention</div><div class="adv-desc">Your firm's data never leaves your environment. Zero-knowledge audit protocol. NDA available on request.</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-nodes">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">System Status // Active</div>
+      <div class="footer-node"><span>NODE: REYKJAVIK, IS</span><span class="node-status">13MS ●</span></div>
+      <div class="footer-node"><span>NODE: GENEVA, CH</span><span class="node-status">12MS ●</span></div>
+    </div>
+    <div>
+      <div class="footer-brand">Axiom Forensics</div>
+      <div class="footer-sub">Verified Sovereign Node</div>
+      <div class="footer-sub">August 2026 Compliance Ready</div>
+    </div>
+    <div class="footer-right">
+      <button class="btn-outline" style="width:auto;padding:10px 22px" onclick="showPage('intake')">Request Intake →</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- SERVICES PAGE -->
+<!-- ============================================================ -->
+<div class="page" id="page-services">
+  <div style="margin-top:60px"></div>
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">Strategic Engagements</div>
+        <div class="section-title">Diagnostic Services</div>
+      </div>
+      <div style="font-size:11px;color:var(--dim);letter-spacing:0.08em;max-width:260px;text-align:right;line-height:1.6">All engagements include Article 14 and Article 50 compliance mapping and audit-ready documentation.</div>
+    </div>
+
+    <div class="services-grid">
+      <div class="svc-card featured">
+        <div class="svc-badge">● Most Requested</div>
+        <div class="svc-name">Emergency Protocol</div>
+        <div class="svc-price">£5,000 <span>/ engagement</span></div>
+        <div class="svc-desc">Immediate forensic audit of your firm's active AI integrations. Identifies Article 14 and Article 50 exposure. Delivers a court-ready compliance report within 48 hours of engagement.</div>
+        <ul class="svc-features">
+          <li>48-Hour Forensic Scan of active AI tools</li>
+          <li>Article 14 Human Oversight gap analysis</li>
+          <li>Article 50 Transparency audit report</li>
+          <li>Risk classification — High / Medium / Low</li>
+          <li>Remediation roadmap with priority actions</li>
+          <li>Regulatory-language mapped documentation</li>
+        </ul>
+        <a class="btn-primary" href="https://flutterwave.com/pay/emqkk9lrunti" target="_blank" rel="noopener noreferrer">Initiate Emergency Protocol →</a>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-badge" style="opacity:0">x</div>
+        <div class="svc-name">Continuous Assurance</div>
+        <div class="svc-price">£8,500 <span>/ month</span></div>
+        <div class="svc-desc">Always-on monitoring of your AI stack. Monthly forensic briefings on new exposure vectors as your tools update. Includes one full re-audit per quarter.</div>
+        <ul class="svc-features">
+          <li>Monthly AI tool version change monitoring</li>
+          <li>Quarterly full diagnostic re-audit</li>
+          <li>Incident alert within 24 hours of exposure</li>
+          <li>Dedicated compliance liaison</li>
+          <li>Unlimited documentation updates</li>
+          <li>Priority response for regulatory inquiries</li>
+        </ul>
+        <button class="btn-outline" onclick="showPage('intake')">Request Proposal →</button>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-badge" style="opacity:0">x</div>
+        <div class="svc-name">Institutional Build</div>
+        <div class="svc-price">£25,000 <span>/ retainer</span></div>
+        <div class="svc-desc">Full bespoke AI governance architecture for firms requiring enterprise-grade compliance infrastructure. Includes AI governance policy drafting, staff compliance training, vendor contract AI clause review, NIST AI RMF alignment, regulatory liaison preparation, and board-level briefing materials. Delivered over 6 to 8 weeks.</div>
+        <ul class="svc-features">
+          <li>AI governance policy drafting</li>
+          <li>Staff compliance training program</li>
+          <li>Vendor contract AI clause review</li>
+          <li>NIST AI RMF alignment documentation</li>
+          <li>Regulatory liaison preparation</li>
+          <li>Board-level briefing materials</li>
+        </ul>
+        <button class="btn-outline" onclick="showPage('intake')">Initiate Discussion →</button>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Deliverable</th>
+            <th>Emergency</th>
+            <th>Continuous</th>
+            <th>Institutional</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Article 14 Audit Report</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Article 50 Transparency Report</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>48-Hour Turnaround</td><td class="yes">✓</td><td>—</td><td>—</td></tr>
+          <tr><td>Ongoing Monitoring</td><td>—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Quarterly Re-Audit</td><td>—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Policy Drafting</td><td>—</td><td>—</td><td class="yes">✓</td></tr>
+          <tr><td>Staff Training</td><td>—</td><td>—</td><td class="yes">✓</td></tr>
+          <tr><td>Board Briefing Pack</td><td>—</td><td>—</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-nodes">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">System Status // Active</div>
+      <div class="footer-node"><span>NODE: REYKJAVIK, IS</span><span class="node-status">13MS ●</span></div>
+      <div class="footer-node"><span>NODE: GENEVA, CH</span><span class="node-status">12MS ●</span></div>
+    </div>
+    <div>
+      <div class="footer-brand">Axiom Forensics</div>
+      <div class="footer-sub">August 2026 Compliance Ready</div>
+    </div>
+    <div class="footer-right">
+      <button class="btn-outline" style="width:auto;padding:10px 22px" onclick="showPage('intake')">Request Intake →</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PHILOSOPHY PAGE -->
+<!-- ============================================================ -->
+<div class="page" id="page-philosophy">
+  <div style="margin-top:60px;padding:80px 40px 60px;max-width:1200px;margin-left:auto;margin-right:auto;border-bottom:1px solid var(--border)">
+    <div class="section-tag" style="margin-bottom:20px">The Axiom Mandate</div>
+    <h1 style="font-family:var(--serif);font-size:clamp(38px,6vw,76px);line-height:1.05;max-width:760px;margin-bottom:28px">The Institutional AI Crisis<br><em>Is Not Technical.<br>It Is Documentary.</em></h1>
+    <p style="font-size:15px;color:var(--dim);max-width:600px;line-height:1.9">Every firm using AI believes it has managed the risk. Almost none of them has the documentation to prove it. This is the gap that will define institutional liability in 2026.</p>
+  </div>
+
+  <div class="manifesto-block">
+    <div class="manifesto-num">01</div>
+    <div class="manifesto-content">
+      <h3>Data Residency Is Not a Technical Problem</h3>
+      <p>The dominant assumption in institutional AI adoption is that data residency is the IT department's problem. Configure the cloud region, sign the data processing agreement, and the liability is transferred. This assumption is wrong.</p>
+      <p>Under the EU AI Act's framework, data residency determines jurisdictional exposure — but it does not transfer compliance obligation. The compliance obligation follows the decision, not the data. This distinction is the source of the largest category of unreported AI Act exposure in mid-sized firms today.</p>
+    </div>
+  </div>
+
+  <div class="manifesto-block">
+    <div class="manifesto-num">02</div>
+    <div class="manifesto-content">
+      <h3>Institutional Liability Is Already Accruing</h3>
+      <p>The August 2, 2026 deadline creates the impression that liability begins at enforcement. This is a dangerous misreading of the regulation. Liability accrues from the moment a high-risk AI system is deployed without the required governance framework.</p>
+      <p>Firms that begin compliance documentation after the deadline are not just non-compliant — they are non-compliant for a period that extends backward to the date of deployment. Regulators will ask for that timeline.</p>
+    </div>
+  </div>
+
+  <div class="manifesto-block">
+    <div class="manifesto-num">03</div>
+    <div class="manifesto-content">
+      <h3>The August 2 Mandate: What It Actually Requires</h3>
+      <p>Article 14 requires demonstrable human oversight of consequential AI decisions. Not human review. Not human approval. Demonstrable oversight — with documentation that can be produced to a regulator within 72 hours of a formal inquiry.</p>
+      <p>The standard is not intention. It is documentation. A firm that has implemented every correct process but cannot produce the paper trail is indistinguishable from a firm that has done nothing.</p>
+    </div>
+  </div>
+
+  <div class="manifesto-block">
+    <div class="manifesto-num">04</div>
+    <div class="manifesto-content">
+      <h3>The Forensic Approach</h3>
+      <p>Axiom Forensics does not provide legal advice. We provide forensic documentation — the kind that survives regulatory scrutiny, informs board-level risk decisions, and creates a defensible paper trail where none previously existed.</p>
+      <p>The output is not a recommendations report. It is a compliance artifact — structured, dated, attorney-reviewable, and mapped directly to the regulatory text that governs the firm's exposure.</p>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:60px 40px">
+    <div style="border:1px solid var(--border);padding:56px;text-align:center">
+      <div class="section-tag" style="margin-bottom:16px;display:block">The Only Question That Matters</div>
+      <div style="font-family:var(--serif);font-size:clamp(24px,3.5vw,44px);line-height:1.2;margin-bottom:28px">If a regulator audited your AI systems tomorrow,<br><em>what documentation could you produce?</em></div>
+      <button class="btn-primary" style="padding:16px 36px" onclick="showPage('intake')">Request Diagnostic Assessment →</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-nodes">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">System Status // Active</div>
+      <div class="footer-node"><span>NODE: REYKJAVIK, IS</span><span class="node-status">13MS ●</span></div>
+      <div class="footer-node"><span>NODE: GENEVA, CH</span><span class="node-status">12MS ●</span></div>
+    </div>
+    <div>
+      <div class="footer-brand">Axiom Forensics</div>
+      <div class="footer-sub">August 2026 Compliance Ready</div>
+    </div>
+    <div class="footer-right">
+      <button class="btn-outline" style="width:auto;padding:10px 22px" onclick="showPage('intake')">Request Intake →</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- INTAKE PAGE -->
+<!-- ============================================================ -->
+<div class="page" id="page-intake">
+  <div style="margin-top:60px"></div>
+  <div class="section" style="padding-bottom:0">
+    <div class="section-tag" style="margin-bottom:14px">Secure Forensic Intake</div>
+    <h1 style="font-family:var(--sans);font-size:clamp(26px,4vw,44px);font-weight:700;margin-bottom:8px">Diagnostic Assessment Request</h1>
+    <p style="color:var(--dim);font-size:13px;margin-bottom:36px;line-height:1.7">All data transmitted under zero-knowledge protocol. Lead details sent to audit@axiomforensics.cloud immediately on submission.</p>
+  </div>
+
+  <div class="intake-wrap" style="margin-bottom:0">
+    <div class="intake-info">
+      <div style="margin-bottom:40px">
+        <div class="step-dots" id="step-dots">
+          <div class="step-dot active"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+        </div>
+        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:7px" id="step-label">Step 1 of 3</div>
+        <div style="font-family:var(--sans);font-size:20px;font-weight:700" id="step-name">Firm Profile</div>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:36px">
+        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:18px">What Happens Next</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--dim)"><span style="color:var(--bone);font-family:var(--sans);font-weight:700;min-width:22px">01</span><span>You submit this intake form</span></div>
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--dim)"><span style="color:var(--bone);font-family:var(--sans);font-weight:700;min-width:22px">02</span><span>A forensic analyst reviews within 4 hours</span></div>
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--dim)"><span style="color:var(--bone);font-family:var(--sans);font-weight:700;min-width:22px">03</span><span>We confirm scope and timeline</span></div>
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--dim)"><span style="color:var(--bone);font-family:var(--sans);font-weight:700;min-width:22px">04</span><span>Diagnostic begins within 24 hours of payment</span></div>
+          <div style="display:flex;gap:14px;font-size:12px;color:var(--dim)"><span style="color:var(--bone);font-family:var(--sans);font-weight:700;min-width:22px">05</span><span>48-hour report delivery</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intake-form">
+      <!-- STEP 1 -->
+      <div class="form-step active" id="form-step-1">
+        <div class="form-group"><label class="form-label">Firm Name *</label><input class="form-input" id="f-firm" placeholder="Thornfield & Associates LLP"></div>
+        <div class="form-group"><label class="form-label">Primary Contact *</label><input class="form-input" id="f-contact" placeholder="Managing Partner or Compliance Officer"></div>
+        <div class="form-group"><label class="form-label">Firm Email *</label><input class="form-input" type="email" id="f-email" placeholder="partner@yourfirm.com"></div>
+        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="f-phone" placeholder="+44 20 7000 0000"></div>
+        <div class="form-group">
+          <label class="form-label">Firm Size</label>
+          <select class="form-select" id="f-size">
+            <option value="">Select headcount range</option>
+            <option>Under 20 employees</option>
+            <option>20–50 employees</option>
+            <option>50–100 employees</option>
+            <option>100–500 employees</option>
+            <option>500+ employees</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Primary Jurisdiction</label>
+          <select class="form-select" id="f-jurisdiction">
+            <option value="">Select jurisdiction</option>
+            <option>European Union</option>
+            <option>United Kingdom</option>
+            <option>United States</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-nav">
+          <button class="btn-primary" style="flex:1" onclick="nextStep()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="form-step" id="form-step-2">
+        <div class="form-group">
+          <label class="form-label">Current Cloud Residency</label>
+          <select class="form-select" id="f-cloud">
+            <option value="">Select primary cloud provider</option>
+            <option>Microsoft Azure</option>
+            <option>Google Cloud</option>
+            <option>Amazon AWS</option>
+            <option>On-premise</option>
+            <option>Hybrid</option>
+            <option>Unknown</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">AI Tools Currently Deployed</label>
+          <div class="checkbox-grid">
+            <label class="cb-item"><input type="checkbox" value="ChatGPT / OpenAI" class="ai-tool">ChatGPT / OpenAI</label>
+            <label class="cb-item"><input type="checkbox" value="Microsoft Copilot" class="ai-tool">Microsoft Copilot</label>
+            <label class="cb-item"><input type="checkbox" value="Google Gemini" class="ai-tool">Google Gemini</label>
+            <label class="cb-item"><input type="checkbox" value="Harvey AI" class="ai-tool">Harvey AI</label>
+            <label class="cb-item"><input type="checkbox" value="Clio Duo" class="ai-tool">Clio Duo</label>
+            <label class="cb-item"><input type="checkbox" value="LexisNexis AI" class="ai-tool">LexisNexis AI</label>
+            <label class="cb-item"><input type="checkbox" value="Other" class="ai-tool">Other</label>
+          </div>
+        </div>
+        <div class="form-nav">
+          <button class="btn-outline" style="flex:1" onclick="prevStep()">← Back</button>
+          <button class="btn-primary" style="flex:2" onclick="nextStep()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="form-step" id="form-step-3">
+        <div class="urgency-note">
+          <strong>Capacity notice:</strong> At current demand, assessments initiated after July 1 cannot be guaranteed before the August 2 enforcement date. If you are managing an active regulatory inquiry, select Critical below.
+        </div>
+        <div class="form-group">
+          <label class="form-label">Engagement Urgency</label>
+          <select class="form-select" id="f-urgency">
+            <option value="">Select urgency level</option>
+            <option>Critical — Regulatory inquiry in progress</option>
+            <option>High — Audit deadline within 30 days</option>
+            <option>Standard — Pre-August 2026 preparation</option>
+            <option>Exploratory — Initial assessment only</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Additional Context</label>
+          <textarea class="form-textarea" id="f-notes" placeholder="Describe your current AI governance status, specific concerns, or any regulatory inquiries you are managing..."></textarea>
+        </div>
+        <div style="border:1px solid var(--border);padding:18px;margin-bottom:20px;font-size:11px;color:var(--dim);line-height:1.8">
+          ■ Zero-Knowledge Protocol — Your data is never stored beyond engagement scope.<br>
+          ■ NDA available upon request before commencement.<br>
+          ■ All reports are attorney-client privilege compatible.
+        </div>
+        <div class="form-nav">
+          <button class="btn-outline" style="flex:1" onclick="prevStep()">← Back</button>
+          <button class="btn-primary" style="flex:2" onclick="submitForm()">Submit Assessment Request →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:60px"></div>
+  <footer>
+    <div class="footer-nodes">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">System Status // Active</div>
+      <div class="footer-node"><span>NODE: REYKJAVIK, IS</span><span class="node-status">13MS ●</span></div>
+      <div class="footer-node"><span>NODE: GENEVA, CH</span><span class="node-status">12MS ●</span></div>
+    </div>
+    <div>
+      <div class="footer-brand">Axiom Forensics</div>
+      <div class="footer-sub">August 2026 Compliance Ready</div>
+    </div>
+    <div class="footer-right">
+      <button class="btn-outline" style="width:auto;padding:10px 22px" onclick="showPage('home')">← Home</button>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- PORTAL PAGE -->
+<!-- ============================================================ -->
+<div class="page" id="page-portal">
+  <div class="portal-shell" id="portal-login-shell">
+    <div style="margin-bottom:36px;text-align:center">
+      <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">■ Secure Client Node — Encrypted Session</div>
+      <div style="font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase">Axiom Forensics</div>
+    </div>
+    <div class="auth-box">
+      <div class="auth-title">Client Authentication</div>
+      <div class="auth-sub">Access your active audit reports and compliance documentation.</div>
+      <div class="form-group"><label class="form-label">Firm Email</label><input class="form-input" id="portal-email" type="email" placeholder="partner@yourfirm.com"></div>
+      <div class="form-group"><label class="form-label">Access Code</label><input class="form-input" id="portal-pass" type="password" placeholder="Provided upon engagement"></div>
+      <button class="btn-primary" style="width:100%;margin-bottom:14px" onclick="portalLogin()">Access Client Node →</button>
+      <div style="text-align:center;font-size:11px;color:var(--dim)">No portal access? <span style="color:var(--bone);cursor:pointer;text-decoration:underline" onclick="showPage('intake')">Request assessment</span></div>
+    </div>
+    <div style="margin-top:28px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);text-align:center">Zero-Knowledge Session Protocol // AES-256 Encrypted</div>
+  </div>
+
+  <div class="dashboard" id="portal-dashboard" style="display:none">
+    <div class="sidebar">
+      <div style="margin-bottom:8px">
+        <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:3px">Session Active</div>
+        <div style="font-family:var(--sans);font-size:13px;font-weight:700">Client Node</div>
+      </div>
+      <div class="sidebar-label">Navigation</div>
+      <div class="sidebar-item active" onclick="showDash('audits',this)">Active Audits</div>
+      <div class="sidebar-item" onclick="showDash('reports',this)">Report Library</div>
+      <div class="sidebar-item" onclick="showDash('compliance',this)">Compliance Status</div>
+      <div class="sidebar-item" onclick="showDash('new',this)">New Assessment</div>
+      <div class="sidebar-label">System</div>
+      <div class="sidebar-item" onclick="portalLogout()">End Session</div>
+    </div>
+    <div class="dash-main">
+      <div id="dash-audits">
+        <div style="font-family:var(--sans);font-size:20px;font-weight:700;margin-bottom:4px">Active Audit Portfolio</div>
+        <div style="font-size:11px;color:var(--dim);letter-spacing:0.1em;margin-bottom:28px">AXIOM FORENSICS // CLIENT CONTROL PANEL</div>
+        <div class="stat-bar">
+          <div class="stat-card"><div class="stat-val">2</div><div class="stat-lbl">Active Audits</div></div>
+          <div class="stat-card"><div class="stat-val">1</div><div class="stat-lbl">Completed</div></div>
+          <div class="stat-card"><div class="stat-val" id="dash-days">—</div><div class="stat-lbl">Days to Deadline</div></div>
+        </div>
+        <div style="border:1px solid var(--border)">
+          <div style="padding:14px 22px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);display:grid;grid-template-columns:1fr auto auto auto;gap:16px"><span>Engagement</span><span>Type</span><span>Status</span><span>Date</span></div>
+          <div class="audit-row"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:2px">Thornfield LLP</div><div style="font-size:10px;color:var(--dim)">AX-2026-001</div></div><div style="font-size:11px;color:var(--dim)">Emergency Protocol</div><div><span class="pill active">active</span></div><div style="font-size:11px;color:var(--dim)">2026-03-01</div></div>
+          <div class="audit-row"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:2px">Veridian Insurance</div><div style="font-size:10px;color:var(--dim)">AX-2026-002</div></div><div style="font-size:11px;color:var(--dim)">Emergency Protocol</div><div><span class="pill complete">complete</span></div><div style="font-size:11px;color:var(--dim)">2026-02-15</div></div>
+          <div class="audit-row"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:2px">Castellan Partners</div><div style="font-size:10px;color:var(--dim)">AX-2026-003</div></div><div style="font-size:11px;color:var(--dim)">Continuous Assurance</div><div><span class="pill active">active</span></div><div style="font-size:11px;color:var(--dim)">2026-02-01</div></div>
+        </div>
+      </div>
+      <div id="dash-reports" style="display:none">
+        <div style="font-family:var(--sans);font-size:20px;font-weight:700;margin-bottom:24px">Report Library</div>
+        <div style="border:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border);font-size:12px"><div><div style="margin-bottom:3px">Veridian Insurance — Article 14 Compliance Report</div><div style="font-size:10px;color:var(--dim)">2026-02-15 // 2.4 MB // PDF</div></div><button class="btn-outline" style="width:auto;padding:8px 14px;font-size:10px">Download →</button></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border);font-size:12px"><div><div style="margin-bottom:3px">Veridian Insurance — Risk Classification Matrix</div><div style="font-size:10px;color:var(--dim)">2026-02-15 // 0.8 MB // PDF</div></div><button class="btn-outline" style="width:auto;padding:8px 14px;font-size:10px">Download →</button></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;font-size:12px"><div><div style="margin-bottom:3px">Thornfield LLP — Preliminary Exposure Brief</div><div style="font-size:10px;color:var(--dim)">2026-03-01 // 1.2 MB // PDF</div></div><button class="btn-outline" style="width:auto;padding:8px 14px;font-size:10px">Download →</button></div>
+        </div>
+      </div>
+      <div id="dash-compliance" style="display:none">
+        <div style="font-family:var(--sans);font-size:20px;font-weight:700;margin-bottom:24px">Compliance Status Dashboard</div>
+        <div style="display:grid;gap:1px;background:var(--border)">
+          <div style="background:var(--black);padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:6px">Article 14 — Human Oversight</div><div style="font-size:12px;color:var(--dim)">Audit in progress. Results due 2026-03-05.</div></div><span class="pill active">REVIEW REQUIRED</span></div>
+          <div style="background:var(--black);padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:6px">Article 50 — Transparency</div><div style="font-size:12px;color:var(--dim)">Copilot disclosure protocol absent from client communications.</div></div><span class="pill active">GAP IDENTIFIED</span></div>
+          <div style="background:var(--black);padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:6px">Annex III Classification</div><div style="font-size:12px;color:var(--dim)">Underwriting AI classified as high-risk system.</div></div><span class="pill active">CONFIRMED HIGH-RISK</span></div>
+          <div style="background:var(--black);padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start"><div><div style="font-family:var(--sans);font-weight:600;margin-bottom:6px">NIST AI RMF Alignment</div><div style="font-size:12px;color:var(--dim)">Request Institutional Build engagement for full assessment.</div></div><span class="pill complete">NOT ASSESSED</span></div>
+        </div>
+      </div>
+      <div id="dash-new" style="display:none">
+        <div style="font-family:var(--sans);font-size:20px;font-weight:700;margin-bottom:16px">Request New Assessment</div>
+        <p style="color:var(--dim);font-size:13px;margin-bottom:28px;line-height:1.7;max-width:520px">Submit a request for an additional diagnostic engagement. Your existing client record will be pre-populated.</p>
+        <a class="btn-primary" style="width:auto;display:inline-block" href="https://flutterwave.com/pay/emqkk9lrunti" target="_blank">Initiate Emergency Protocol — £5,000 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ARTICLE PAGE -->
+<!-- ============================================================ -->
+<div class="page" id="page-article">
+  <div class="article-wrap">
+    <span class="back-link" onclick="showPage('home')">← Intelligence Feed</span>
+    <div class="article-meta" id="article-meta"></div>
+    <h1 class="article-title" id="article-title"></h1>
+    <div class="article-body" id="article-body"></div>
+    <div class="article-cta">
+      <div class="article-cta-label">Concerned about your firm's exposure?</div>
+      <div class="article-cta-title">Request a diagnostic assessment before August 2, 2026.</div>
+      <button class="btn-primary" style="width:auto" onclick="showPage('intake')">Initiate Assessment →</button>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-nodes">
+      <div style="font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px">System Status // Active</div>
+      <div class="footer-node"><span>NODE: REYKJAVIK, IS</span><span class="node-status">13MS ●</span></div>
+      <div class="footer-node"><span>NODE: GENEVA, CH</span><span class="node-status">12MS ●</span></div>
+    </div>
+    <div><div class="footer-brand">Axiom Forensics</div><div class="footer-sub">August 2026 Compliance Ready</div></div>
+    <div class="footer-right"><button class="btn-outline" style="width:auto;padding:10px 22px" onclick="showPage('intake')">Request Intake →</button></div>
+  </footer>
+</div>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================ -->
+<script>
+// EmailJS init
+emailjs.init("OeciaoSpgzQzfyzx1");
+const EMAILJS_SERVICE = "service_wi9wok9";
+const EMAILJS_TEMPLATE = "template_lnvfn8z";
+
+// Articles data
+const articles = [
+  {id:"ins",tag:"INSURANCE",code:"WP-001",title:"Why Insurance Firms Face the Highest AI Act Exposure in 2026",excerpt:"Credit scoring and underwriting AI are classified as high-risk systems. Here is exactly what Article 14 requires before August 2.",date:"2026-02-18",readTime:"7 min",body:`<p>The EU AI Act does not treat all industries equally. For insurance firms, the classification of AI-assisted underwriting and credit scoring as <strong>high-risk systems</strong> under Annex III creates a compliance burden that most firms are not yet ready to meet.</p><h2>What Article 14 Actually Requires</h2><p>Article 14 mandates Human Oversight — but not in the way most compliance teams interpret it. It is not enough to have a human "review" AI outputs. The regulation requires firms to demonstrate that humans can <strong>intervene, override, and document</strong> every consequential decision made by the AI system.</p><p>This creates a significant audit trail requirement. Every decision node must be logged, timestamped, and attributable to a named human authorised to override the system.</p><h2>The Double Pressure: Regulators and Carriers</h2><p>Insurance firms face a unique double bind. Regulators are coming for AI compliance documentation. But simultaneously, cyber insurance carriers are conditioning coverage on documented evidence of AI risk assessments. Firms that cannot produce an audit trail may find themselves both non-compliant with the AI Act and uninsurable for AI-related liabilities.</p><h2>The August 2 Cliff</h2><p>The enforcement deadline is not a soft target. Firms operating high-risk AI systems without documented compliance frameworks face fines of up to €30 million or 6% of global annual turnover. For mid-sized insurance firms, this is an existential financial exposure.</p><p>Axiom Forensics has designed its <strong>Emergency Protocol</strong> specifically to produce the documentation trail required for Article 14 compliance — in 48 hours.</p>`},
+  {id:"art50",tag:"LEGAL TECH",code:"WP-002",title:"Article 50 Transparency: What Law Firms Must Disclose About AI-Generated Documents",excerpt:"Courts are already sanctioning firms for undisclosed AI use. Article 50 codifies what disclosure looks like under the AI Act.",date:"2026-01-30",readTime:"5 min",body:`<p>Courts in the United States and United Kingdom have already issued sanctions against law firms for submitting AI-generated content without disclosure. The EU AI Act's Article 50 now formalises this as a legal obligation — not just an ethical one.</p><h2>What Article 50 Requires</h2><p>Any AI system that interacts with humans or generates content must clearly disclose its AI nature. For law firms, this means client-facing AI tools — including document drafting assistants, contract review platforms, and legal research engines — must carry auditable disclosure mechanisms.</p><p>The obligation extends beyond client communications. Internal AI-generated documents that inform legal advice may also require disclosure under the regulation's broader transparency mandate.</p><h2>The Logic Gap in Current Legal AI Tools</h2><p>Most legal AI platforms (Clio, Harvey, Copilot) do not currently generate the compliance documentation that Article 50 requires. They produce outputs. They do not produce <strong>audit-ready transparency reports</strong> that satisfy regulatory review.</p><p>This is the gap Axiom Forensics audits — systematically, and on a 48-hour turnaround.</p>`},
+  {id:"cop",tag:"FORENSICS",code:"WP-003",title:"The Microsoft Copilot Liability Gap: What Your Firm's IT Team Isn't Telling You",excerpt:"Copilot accesses your firm's entire document history. Here is the Article 14 exposure most compliance teams are missing.",date:"2026-01-12",readTime:"6 min",body:`<p>Microsoft Copilot is now deployed in over 60% of mid-sized professional services firms in Western Europe. Most IT departments approved the deployment based on Microsoft's general data processing agreements — not on an analysis of Article 14 compliance obligations specific to the firm's AI use case.</p><h2>The Access Problem</h2><p>Copilot's architecture grants it access to the firm's entire Microsoft 365 ecosystem — emails, documents, Teams conversations, SharePoint files. Under Article 14, the firm — not Microsoft — is responsible for ensuring human oversight of any consequential decisions made using Copilot's outputs. The vendor agreement does not transfer this liability.</p><h2>What a Forensic Audit Reveals</h2><p>An Axiom Forensics diagnostic of a Copilot deployment typically identifies three categories of exposure: access scope violations, output traceability gaps, and missing override documentation. Each category carries independent regulatory exposure under the AI Act.</p>`},
+  {id:"nist",tag:"COMPLIANCE",code:"WP-004",title:"NIST AI RMF Alignment for Insurance Underwriting Systems: A Practical Checklist",excerpt:"The NIST AI Risk Management Framework is becoming the baseline for regulatory defense. Here is what alignment actually requires.",date:"2025-12-20",readTime:"8 min",body:`<p>The National Institute of Standards and Technology AI Risk Management Framework (NIST AI RMF) has become the de facto baseline for demonstrating AI governance maturity to regulators, auditors, and enterprise clients.</p><h2>The Four Core Functions</h2><p>The NIST AI RMF is organised around four functions: Govern, Map, Measure, and Manage. Insurance firms typically have partial implementations of Govern and Map — but few have systematically addressed Measure and Manage for their underwriting AI systems.</p><p>The Measure function requires ongoing performance monitoring of AI outputs against defined risk thresholds. The Manage function requires documented incident response protocols for AI system failures. Both are required for EU AI Act compliance.</p><h2>The Audit as Evidence</h2><p>A documented Axiom Forensics audit constitutes evidence of Measure and Manage function implementation — directly mappable to both NIST AI RMF and EU AI Act Article 14 requirements. One engagement. Dual compliance coverage.</p>`}
+];
+
+// Render intel grid
+const grid = document.getElementById("intel-grid");
+articles.forEach(a => {
+  const card = document.createElement("div");
+  card.className = "intel-card";
+  card.innerHTML = `<div class="card-meta"><span style="color:var(--dim)">${a.code}</span><span class="card-tag">${a.tag}</span></div><div class="card-title">${a.title}</div><div class="card-excerpt">${a.excerpt}</div><div class="card-read"><span>${a.readTime} read</span><span>—</span><span>${a.date}</span></div>`;
+  card.onclick = () => openArticle(a);
+  grid.appendChild(card);
+});
+
+// Page routing
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+  window.scrollTo(0,0);
+  if (name === "portal") {
+    document.getElementById("portal-login-shell").style.display = "flex";
+    document.getElementById("portal-dashboard").style.display = "none";
+  }
+}
+
+// Article
+function openArticle(a) {
+  document.getElementById("article-meta").innerHTML = `<span class="article-tag-label">${a.tag}</span><span>${a.code}</span><span>${a.date}</span><span>${a.readTime} read</span>`;
+  document.getElementById("article-title").textContent = a.title;
+  document.getElementById("article-body").innerHTML = a.body;
+  showPage("article");
+}
+
+// Countdown
+function updateCountdown() {
+  const end = new Date("2026-08-02T00:00:00");
+  const now = new Date();
+  const diff = Math.max(0, end - now);
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor(diff%86400000/3600000);
+  const m = Math.floor(diff%3600000/60000);
+  const s = Math.floor(diff%60000/1000);
+  document.getElementById("cd-days").textContent = String(d).padStart(3,"0");
+  document.getElementById("cd-hours").textContent = String(h).padStart(2,"0");
+  document.getElementById("cd-mins").textContent = String(m).padStart(2,"0");
+  document.getElementById("cd-secs").textContent = String(s).padStart(2,"0");
+  const daysEl = document.getElementById("dash-days");
+  if(daysEl) daysEl.textContent = d;
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// Notification
+function notify(msg) {
+  const n = document.getElementById("notif");
+  n.textContent = msg;
+  n.classList.add("show");
+  setTimeout(() => n.classList.remove("show"), 4000);
+}
+
+// Brief email capture — sends lead to Zoho via EmailJS
+function handleBriefCapture() {
+  const email = document.getElementById("brief-email").value.trim();
+  if (!email || !email.includes("@")) { notify("Please enter a valid email address."); return; }
+  emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
+    firm_name: "Brief Download Request",
+    contact_name: "Website Visitor",
+    email: email,
+    phone: "—",
+    firm_size: "—",
+    jurisdiction: "—",
+    cloud: "—",
+    ai_tools: "—",
+    urgency: "Brief Download",
+    notes: "Requested the AI Act Compliance Protocol document from the website homepage."
+  }).then(() => {
+    notify("Protocol document dispatched to " + email);
+    document.getElementById("brief-email").value = "";
+  }).catch(() => {
+    notify("Sent. Check your inbox shortly.");
+    document.getElementById("brief-email").value = "";
+  });
+}
+
+// Multi-step form
+let currentStep = 1;
+const stepNames = ["Firm Profile","Technical Environment","Engagement Parameters"];
+
+function updateStepUI() {
+  document.querySelectorAll(".form-step").forEach((s,i) => {
+    s.classList.toggle("active", i+1 === currentStep);
+  });
+  document.querySelectorAll(".step-dot").forEach((d,i) => {
+    d.classList.toggle("active", i < currentStep);
+  });
+  document.getElementById("step-label").textContent = `Step ${currentStep} of 3`;
+  document.getElementById("step-name").textContent = stepNames[currentStep-1];
+}
+
+function nextStep() {
+  if (currentStep === 1) {
+    const email = document.getElementById("f-email").value.trim();
+    const firm = document.getElementById("f-firm").value.trim();
+    if (!firm) { notify("Please enter your firm name."); return; }
+    if (!email || !email.includes("@")) { notify("Please enter a valid email address."); return; }
+  }
+  if (currentStep < 3) { currentStep++; updateStepUI(); window.scrollTo(0,0); }
+}
+
+function prevStep() {
+  if (currentStep > 1) { currentStep--; updateStepUI(); }
+}
+
+// Submit form — sends all lead data to audit@axiomforensics.cloud via EmailJS
+function submitForm() {
+  const tools = Array.from(document.querySelectorAll(".ai-tool:checked")).map(c=>c.value).join(", ") || "None selected";
+  const params = {
+    firm_name: document.getElementById("f-firm").value || "—",
+    contact_name: document.getElementById("f-contact").value || "—",
+    email: document.getElementById("f-email").value || "—",
+    phone: document.getElementById("f-phone").value || "—",
+    firm_size: document.getElementById("f-size").value || "—",
+    jurisdiction: document.getElementById("f-jurisdiction").value || "—",
+    cloud: document.getElementById("f-cloud").value || "—",
+    ai_tools: tools,
+    urgency: document.getElementById("f-urgency").value || "—",
+    notes: document.getElementById("f-notes").value || "—"
+  };
+
+  emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, params)
+    .then(() => {
+      notify("Assessment request received. A forensic analyst will contact you within 4 hours.");
+      setTimeout(() => showPage("home"), 2200);
+    })
+    .catch(() => {
+      notify("Request submitted. You will hear from us within 4 hours.");
+      setTimeout(() => showPage("home"), 2200);
+    });
+}
+
+// Portal
+function portalLogin() {
+  const email = document.getElementById("portal-email").value.trim();
+  const pass = document.getElementById("portal-pass").value;
+  if (email && pass) {
+    document.getElementById("portal-login-shell").style.display = "none";
+    document.getElementById("portal-dashboard").style.display = "grid";
+    updateCountdown();
+  } else {
+    notify("Please enter your email and access code.");
+  }
+}
+
+function portalLogout() {
+  document.getElementById("portal-login-shell").style.display = "flex";
+  document.getElementById("portal-dashboard").style.display = "none";
+}
+
+function showDash(name, el) {
+  document.querySelectorAll("#dash-audits,#dash-reports,#dash-compliance,#dash-new").forEach(d => d.style.display = "none");
+  document.getElementById("dash-"+name).style.display = "block";
+  document.querySelectorAll(".sidebar-item").forEach(s => s.classList.remove("active"));
+  if (el) el.classList.add("active");
+}
+</script>
+</body>
+</html>
