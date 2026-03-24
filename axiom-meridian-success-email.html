@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axiom Forensics — Meridian Engagement Confirmed</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #F0EDE6; color: #111; font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.7; }
+  .email-wrap { max-width: 640px; margin: 0 auto; background: #F0EDE6; }
+  .email-header { background: #080808; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .email-logo { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #F0EDE6; }
+  .email-ref { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #444; }
+  .email-status-bar { background: #C0392B; padding: 12px 40px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #F0EDE6; display: flex; justify-content: space-between; }
+  .email-body { padding: 48px 40px; }
+  .greeting { font-size: 20px; font-weight: 300; margin-bottom: 28px; color: #111; line-height: 1.4; }
+  .greeting strong { font-weight: 500; }
+  p { font-size: 14px; color: #444; line-height: 1.85; margin-bottom: 18px; }
+  p strong { color: #111; }
+  .divider { border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 32px 0; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #C0392B; margin-bottom: 14px; display: block; }
+  .erl-box { background: #111; color: #F0EDE6; padding: 28px 32px; margin: 20px 0; }
+  .erl-title { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #B8973A; margin-bottom: 20px; }
+  .erl-item { display: flex; gap: 16px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(240,237,230,0.08); font-size: 13px; color: #A8A49C; }
+  .erl-item:last-child { border-bottom: none; }
+  .erl-item .erl-num { font-family: 'DM Mono', monospace; font-size: 10px; color: #C0392B; flex-shrink: 0; padding-top: 2px; min-width: 40px; }
+  .erl-item .erl-text strong { color: #F0EDE6; display: block; font-weight: 500; margin-bottom: 3px; font-size: 13px; }
+  .erl-item .erl-text span { font-size: 12px; color: #666; }
+  .vault-box { background: #fff; border: 1px solid rgba(0,0,0,0.1); border-left: 3px solid #B8973A; padding: 20px 24px; margin: 20px 0; }
+  .vault-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #B8973A; margin-bottom: 10px; }
+  .vault-steps { display: flex; flex-direction: column; gap: 10px; }
+  .vault-step { display: flex; gap: 14px; font-size: 13px; color: #444; }
+  .vault-step-num { font-family: 'DM Mono', monospace; font-size: 11px; color: #C0392B; flex-shrink: 0; font-weight: 500; min-width: 24px; }
+  .timeline-box { background: #f5f2eb; border: 1px solid rgba(0,0,0,0.08); padding: 20px 24px; margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .tl-item { display: flex; flex-direction: column; gap: 4px; }
+  .tl-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: #888; }
+  .tl-value { font-size: 13px; font-weight: 500; color: #111; }
+  .protocol-box { background: #111; padding: 16px 24px; margin: 20px 0; }
+  .protocol-line { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #F0EDE6; padding: 4px 0; }
+  .protocol-line .key { color: #B8973A; }
+  .sig-block { margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.1); }
+  .sig-name { font-size: 14px; font-weight: 500; color: #111; margin-bottom: 2px; }
+  .sig-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin-bottom: 2px; }
+  .sig-url { font-family: 'DM Mono', monospace; font-size: 11px; color: #C0392B; }
+  .email-footer { background: #080808; padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+  .footer-text { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #333; }
+  @media(max-width:600px) { .email-body { padding: 32px 24px; } .timeline-box { grid-template-columns: 1fr; } .email-header { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="email-wrap">
+
+  <div class="email-header">
+    <div class="email-logo">Axiom Forensics</div>
+    <div class="email-ref">AFP-AUD-001</div>
+  </div>
+
+  <div class="email-status-bar">
+    <span>Meridian Forensic Audit · Engagement Confirmed</span>
+    <span>Deposit Received · Vault Issued</span>
+  </div>
+
+  <div class="email-body">
+
+    <div class="greeting">
+      Your deposit has been received.<br>
+      <strong>Your Meridian Forensic Audit is now active.</strong>
+    </div>
+
+    <p>This confirms that Axiom Forensics has received your €4,950 deposit and your Meridian Forensic Audit engagement (AFP-AUD-001) has been opened. Your Evidence Request List and Secure Evidence Vault access are contained in this communication. Read this email carefully and in full before taking any action.</p>
+
+    <hr class="divider">
+
+    <!-- TIMELINE -->
+    <span class="section-label">Engagement Timeline</span>
+    <div class="timeline-box">
+      <div class="tl-item"><div class="tl-label">Deposit Confirmed</div><div class="tl-value">Now</div></div>
+      <div class="tl-item"><div class="tl-label">Evidence Submission Deadline</div><div class="tl-value">48 Hours</div></div>
+      <div class="tl-item"><div class="tl-label">Meridian Report Delivery</div><div class="tl-value">72 Hours from Evidence Receipt</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- EVIDENCE REQUEST LIST -->
+    <span class="section-label">Evidence Request List · AFP-ERL-001</span>
+    <p>Upload the following to your Secure Evidence Vault within 48 hours. Incomplete submissions will delay delivery. If a specific item does not exist in your organisation, note its absence with a brief explanation — this itself is a forensic finding.</p>
+
+    <div class="erl-box">
+      <div class="erl-title">AFP-ERL-001 · Meridian Evidence Request List</div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-01</div>
+        <div class="erl-text"><strong>AI System Inventory</strong><span>A list of all AI systems currently in production use within your organisation. Include vendor name, system function, date deployed, and the business unit responsible. If no formal inventory exists, provide a written description of known AI tools in use.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-02</div>
+        <div class="erl-text"><strong>Article 14(4) Oversight Designation</strong><span>The name and role of the individual formally designated as the Article 14(4) oversight authority for each AI system. If no such designation exists, state this explicitly. Do not substitute a team name, department, or shared inbox.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-03</div>
+        <div class="erl-text"><strong>Decision Log Sample — 90 Days</strong><span>An export of AI decision log data covering the last 90 days. Must include: decision ID, decision timestamp, decision outcome, and the system or user account ID logged against each decision. Anonymise personal data before submission. Format: CSV or JSON.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-04</div>
+        <div class="erl-text"><strong>Review Log Sample — 90 Days</strong><span>An export of human review log data covering the same 90-day period as ERL-03. Must include: review ID, decision ID (shared reference to ERL-03 where it exists), reviewer account ID, review timestamp, review outcome, and any rationale field populated by the reviewer. Format: CSV or JSON.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-05</div>
+        <div class="erl-text"><strong>Annex IV Technical Documentation</strong><span>Your current Annex IV technical documentation if it exists. If not yet produced, confirm this in writing. The absence of Annex IV documentation is a finding in itself and will be documented accordingly.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-06</div>
+        <div class="erl-text"><strong>Override and Escalation Policy</strong><span>Any written policy, procedure, or protocol governing how human reviewers are expected to override, escalate, or halt AI decisions. Internal documents, draft policies, and email instructions are all acceptable. If no written policy exists, state this explicitly.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-07</div>
+        <div class="erl-text"><strong>Post-Market Monitoring Plan</strong><span>Any documentation of your post-market monitoring framework for AI systems in scope. If no formal plan exists, confirm this in writing. Absence of a post-market monitoring plan is an Article 72 finding.</span></div>
+      </div>
+
+      <div class="erl-item">
+        <div class="erl-num">ERL-08</div>
+        <div class="erl-text"><strong>Vendor Data Processing Agreements</strong><span>The DPA or AI-specific data processing agreement from each AI vendor whose system is in scope. If these have not been reviewed for AI Act alignment, confirm this. Unreviewed vendor agreements are a common source of material findings.</span></div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- VAULT INSTRUCTIONS -->
+    <span class="section-label">Secure Evidence Vault · Access Instructions</span>
+    <div class="vault-box">
+      <div class="vault-title">How to Submit Your Evidence</div>
+      <div class="vault-steps">
+        <div class="vault-step"><div class="vault-step-num">01</div><div>Reply to this email with the subject line <strong>MERIDIAN EVIDENCE SUBMISSION</strong> and attach all ERL items as a single compressed folder (ZIP). Label each file with the ERL reference number (e.g. ERL-01-AI-Inventory.csv).</div></div>
+        <div class="vault-step"><div class="vault-step-num">02</div><div>If any item is too large to email, reply with <strong>VAULT ACCESS REQUESTED</strong> and you will receive a secure upload link within 2 hours. Do not send large files via unencrypted file sharing services.</div></div>
+        <div class="vault-step"><div class="vault-step-num">03</div><div>Anonymise all personal data before submission. Replace names with role references or anonymised identifiers. Retain the data structure — the identifiers themselves are not what is being assessed.</div></div>
+        <div class="vault-step"><div class="vault-step-num">04</div><div>Confirm receipt of this email by replying with <strong>ERL ACKNOWLEDGED</strong> within 4 hours. This starts the engagement clock.</div></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PROTOCOL REMINDER -->
+    <span class="section-label">Engagement Protocol · AFP-AGR-001</span>
+    <div class="protocol-box">
+      <div class="protocol-line"><span class="key">CALLS</span> · Zero-call protocol enforced. No voice or video engagement at any stage.</div>
+      <div class="protocol-line"><span class="key">COMMS</span> · All communication via audit@axiomforensics.cloud or Secure Vault only.</div>
+      <div class="protocol-line"><span class="key">DEPOSIT</span> · Non-refundable. Engagement has commenced.</div>
+      <div class="protocol-line"><span class="key">REPORT</span> · Meridian Report delivered 72 hours from complete evidence receipt.</div>
+      <div class="protocol-line"><span class="key">VAULT</span> · End-to-end encrypted. Evidence deleted post-engagement.</div>
+      <div class="protocol-line"><span class="key">NATURE</span> · Technical Forensic Assessment. Not a statutory audit or legal opinion.</div>
+    </div>
+
+    <p style="margin-top:24px">If you have questions about any ERL item before submission, email audit@axiomforensics.cloud with the subject line <strong>ERL QUERY</strong> followed by the item reference (e.g. ERL QUERY ERL-03). Written responses are issued within 4 business hours.</p>
+
+    <p>We do not follow up by telephone. We do not issue reminders by any channel other than email. The 48-hour evidence submission window begins from the timestamp of this email.</p>
+
+    <div class="sig-block">
+      <div class="sig-name">Joseph</div>
+      <div class="sig-title">Principal Consultant | AI Risk & Forensics | Axiom Forensics</div>
+      <div class="sig-url">axiomforensics.cloud · audit@axiomforensics.cloud</div>
+    </div>
+
+  </div>
+
+  <div class="email-footer">
+    <div class="footer-text">AFP-AUD-001 · Axiom Forensics · Confidential</div>
+    <div class="footer-text">axiomforensics.cloud</div>
+  </div>
+
+</div>
+</body>
+</html>

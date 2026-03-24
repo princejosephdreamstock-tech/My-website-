@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axiom Forensics — AI Act Liability Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #080808; --white: #F5F0E8; --red: #C8402A; --red-dim: #7A2418;
+    --gold: #B8973A; --grey: #2A2A2A; --grey-mid: #444; --grey-light: #888;
+  }
+  html, body { width: 100%; height: 100%; background: var(--black); color: var(--white); font-family: 'DM Sans', sans-serif; overflow: hidden; cursor: none; }
+  .cursor { position: fixed; width: 8px; height: 8px; background: var(--red); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.35; pointer-events: none; z-index: 1000; }
+  #progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--red); z-index: 500; width: 0%; transition: width 0.3s linear; }
+  #stage { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.8s ease; padding: 60px; }
+  .scene.active { opacity: 1; pointer-events: all; }
+
+  /* S1 */
+  #s1 { background: var(--black); }
+  #s1 .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--red); margin-bottom: 28px; opacity: 0; transform: translateY(10px); transition: all 0.6s ease 0.3s; }
+  #s1.active .eyebrow { opacity: 1; transform: translateY(0); }
+  #s1 .headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 10vw, 140px); line-height: 0.92; text-align: center; color: var(--white); opacity: 0; transform: translateY(30px); transition: all 0.8s ease 0.6s; }
+  #s1.active .headline { opacity: 1; transform: translateY(0); }
+  #s1 .headline span { color: var(--red); }
+  #s1 .sub { margin-top: 32px; font-size: 16px; font-weight: 300; letter-spacing: 1px; color: var(--grey-light); text-align: center; opacity: 0; transition: all 0.6s ease 1.2s; }
+  #s1.active .sub { opacity: 1; }
+  #s1 .axiom-logo { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--grey-mid); text-transform: uppercase; opacity: 0; transition: all 0.6s ease 1.6s; }
+  #s1.active .axiom-logo { opacity: 1; }
+
+  /* S2 */
+  #s2 { background: var(--black); flex-direction: row; gap: 80px; align-items: center; justify-content: center; }
+  #s2 .law-number { font-family: 'Bebas Neue', sans-serif; font-size: clamp(100px, 18vw, 220px); color: var(--grey); line-height: 1; opacity: 0; transform: translateX(-40px); transition: all 0.9s ease 0.3s; flex-shrink: 0; }
+  #s2.active .law-number { opacity: 1; transform: translateX(0); }
+  #s2 .law-text { max-width: 480px; }
+  #s2 .law-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--red); text-transform: uppercase; margin-bottom: 16px; opacity: 0; transition: all 0.5s ease 0.7s; }
+  #s2.active .law-label { opacity: 1; }
+  #s2 .law-body { font-size: clamp(22px, 3vw, 36px); font-weight: 300; line-height: 1.3; opacity: 0; transition: all 0.7s ease 0.9s; }
+  #s2.active .law-body { opacity: 1; }
+  #s2 .law-body strong { color: var(--white); font-weight: 500; }
+  #s2 .law-fine { margin-top: 28px; font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 64px); color: var(--red); letter-spacing: 2px; opacity: 0; transition: all 0.7s ease 1.3s; }
+  #s2.active .law-fine { opacity: 1; }
+  #s2 .law-fine span { font-size: 0.5em; color: var(--grey-light); font-family: 'DM Mono', monospace; display: block; letter-spacing: 3px; }
+
+  /* S3 */
+  #s3 { background: var(--black); }
+  #s3 .question { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7vw, 100px); text-align: center; line-height: 1; opacity: 0; transition: all 0.7s ease 0.3s; }
+  #s3.active .question { opacity: 1; }
+  #s3 .checklist { margin-top: 48px; display: flex; flex-direction: column; gap: 16px; max-width: 640px; width: 100%; }
+  #s3 .check-item { display: flex; align-items: center; gap: 20px; padding: 18px 24px; border: 1px solid var(--grey); opacity: 0; transform: translateX(-20px); font-size: 16px; font-weight: 300; }
+  #s3 .check-item .dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+  #s3.active .check-item:nth-child(1) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 0.6s; }
+  #s3.active .check-item:nth-child(2) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 0.85s; }
+  #s3.active .check-item:nth-child(3) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 1.1s; }
+  #s3.active .check-item:nth-child(4) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 1.35s; }
+  #s3 .warning { margin-top: 40px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; opacity: 0; transition: all 0.6s ease 1.8s; }
+  #s3.active .warning { opacity: 1; }
+
+  /* S4 */
+  #s4 { background: var(--black); }
+  #s4 .score-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; opacity: 0; transition: all 0.5s ease 0.3s; }
+  #s4.active .score-label { opacity: 1; }
+  #s4 .score-ring-wrap { position: relative; width: 280px; height: 280px; opacity: 0; transition: all 0.5s ease 0.6s; }
+  #s4.active .score-ring-wrap { opacity: 1; }
+  #s4 svg.ring { width: 280px; height: 280px; transform: rotate(-90deg); }
+  #s4 .ring-bg { fill: none; stroke: var(--grey); stroke-width: 8; }
+  #s4 .ring-fill { fill: none; stroke: var(--red); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 754; stroke-dashoffset: 754; transition: stroke-dashoffset 2s ease 1s; }
+  #s4.active .ring-fill { stroke-dashoffset: 445; }
+  #s4 .score-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #s4 .score-num { font-family: 'Bebas Neue', sans-serif; font-size: 80px; line-height: 1; color: var(--white); }
+  #s4 .score-denom { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--grey-light); letter-spacing: 2px; }
+  #s4 .score-band { margin-top: 24px; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 4px; color: var(--red); text-transform: uppercase; opacity: 0; transition: all 0.5s ease 2.2s; }
+  #s4.active .score-band { opacity: 1; }
+  #s4 .score-desc { margin-top: 16px; max-width: 480px; text-align: center; font-size: 15px; font-weight: 300; color: var(--grey-light); line-height: 1.6; opacity: 0; transition: all 0.5s ease 2.6s; }
+  #s4.active .score-desc { opacity: 1; }
+
+  /* S5 */
+  #s5 { background: var(--black); align-items: flex-start; padding: 60px 80px; }
+  #s5 .finds-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--red); text-transform: uppercase; margin-bottom: 32px; opacity: 0; transition: all 0.5s ease 0.2s; }
+  #s5.active .finds-label { opacity: 1; }
+  #s5 .find-row { display: flex; gap: 24px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid var(--grey); width: 100%; max-width: 800px; opacity: 0; transform: translateY(16px); }
+  #s5.active .find-row:nth-child(2) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.4s; }
+  #s5.active .find-row:nth-child(3) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.7s; }
+  #s5.active .find-row:nth-child(4) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 1.0s; }
+  #s5 .find-ref { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--red); letter-spacing: 2px; flex-shrink: 0; padding-top: 3px; }
+  #s5 .find-content { flex: 1; }
+  #s5 .find-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+  #s5 .find-body { font-size: 13px; font-weight: 300; color: var(--grey-light); line-height: 1.5; }
+  #s5 .find-badge { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; padding: 4px 10px; background: var(--red-dim); color: var(--white); text-transform: uppercase; flex-shrink: 0; height: fit-content; }
+
+  /* S6 */
+  #s6 { background: var(--black); }
+  #s6 .exp-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--grey-light); text-transform: uppercase; margin-bottom: 16px; opacity: 0; transition: all 0.5s ease 0.3s; }
+  #s6.active .exp-tag { opacity: 1; }
+  #s6 .exp-amount { font-family: 'Bebas Neue', sans-serif; font-size: clamp(80px, 14vw, 180px); line-height: 1; color: var(--red); opacity: 0; transform: scale(0.9); transition: all 0.8s ease 0.6s; }
+  #s6.active .exp-amount { opacity: 1; transform: scale(1); }
+  #s6 .exp-sub { font-size: 15px; font-weight: 300; color: var(--grey-light); margin-top: 12px; letter-spacing: 1px; opacity: 0; transition: all 0.5s ease 1.2s; }
+  #s6.active .exp-sub { opacity: 1; }
+  #s6 .exp-line { width: 1px; height: 80px; background: var(--grey-mid); margin: 32px 0; opacity: 0; transition: all 0.5s ease 1.5s; }
+  #s6.active .exp-line { opacity: 1; }
+  #s6 .exp-note { max-width: 520px; text-align: center; font-size: 18px; font-weight: 300; line-height: 1.6; opacity: 0; transition: all 0.6s ease 1.8s; }
+  #s6.active .exp-note { opacity: 1; }
+  #s6 .exp-note strong { color: var(--white); }
+
+  /* S7 */
+  #s7 { background: var(--black); }
+  #s7 .pill-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 36px; opacity: 0; transition: all 0.5s ease 0.2s; }
+  #s7.active .pill-label { opacity: 1; }
+  #s7 .pillars-grid { display: flex; gap: 16px; width: 100%; max-width: 900px; }
+  #s7 .pillar { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 24px 12px; border: 1px solid var(--grey); opacity: 0; transform: translateY(20px); }
+  #s7.active .pillar:nth-child(1) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.4s; }
+  #s7.active .pillar:nth-child(2) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.6s; }
+  #s7.active .pillar:nth-child(3) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.8s; }
+  #s7.active .pillar:nth-child(4) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 1.0s; }
+  #s7.active .pillar:nth-child(5) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 1.2s; }
+  #s7 .pillar-score { font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1; }
+  #s7 .pillar-score.low { color: var(--red); }
+  #s7 .pillar-score.mid { color: var(--gold); }
+  #s7 .pillar-denom { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--grey-light); letter-spacing: 1px; margin-bottom: 12px; }
+  #s7 .pillar-bar-wrap { width: 100%; height: 3px; background: var(--grey); margin-bottom: 14px; }
+  #s7 .pillar-bar { height: 3px; background: var(--red); width: 0%; transition: width 1.2s ease; }
+  #s7 .pillar-bar.mid { background: var(--gold); }
+  #s7.active .pillar:nth-child(1) .pillar-bar { width: 30%; }
+  #s7.active .pillar:nth-child(2) .pillar-bar { width: 45%; }
+  #s7.active .pillar:nth-child(3) .pillar-bar { width: 40%; }
+  #s7.active .pillar:nth-child(4) .pillar-bar { width: 25%; }
+  #s7.active .pillar:nth-child(5) .pillar-bar { width: 65%; }
+  #s7 .pillar-name { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--grey-light); text-transform: uppercase; text-align: center; line-height: 1.5; }
+
+  /* S8 */
+  #s8 { background: var(--black); flex-direction: row; gap: 80px; align-items: center; }
+  #s8 .ready-left { text-align: center; flex-shrink: 0; }
+  #s8 .ready-score-big { font-family: 'Bebas Neue', sans-serif; font-size: 160px; line-height: 1; color: var(--red); opacity: 0; transition: all 0.8s ease 0.4s; }
+  #s8.active .ready-score-big { opacity: 1; }
+  #s8 .ready-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--grey-light); text-transform: uppercase; opacity: 0; transition: all 0.5s ease 1s; }
+  #s8.active .ready-label { opacity: 1; }
+  #s8 .ready-verdict { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 4px; color: var(--red); text-transform: uppercase; margin-top: 8px; opacity: 0; transition: all 0.5s ease 1.2s; }
+  #s8.active .ready-verdict { opacity: 1; }
+  #s8 .ready-right { max-width: 420px; }
+  #s8 .ready-title { font-size: 28px; font-weight: 300; line-height: 1.4; margin-bottom: 24px; opacity: 0; transition: all 0.6s ease 0.6s; }
+  #s8.active .ready-title { opacity: 1; }
+  #s8 .ready-items { display: flex; flex-direction: column; gap: 14px; }
+  #s8 .ready-item { display: flex; gap: 16px; align-items: flex-start; font-size: 14px; font-weight: 300; color: var(--grey-light); line-height: 1.5; opacity: 0; transform: translateX(20px); }
+  #s8 .ready-item .cross { color: var(--red); font-size: 18px; flex-shrink: 0; line-height: 1; }
+  #s8.active .ready-item:nth-child(1) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 1s; }
+  #s8.active .ready-item:nth-child(2) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 1.25s; }
+  #s8.active .ready-item:nth-child(3) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 1.5s; }
+  #s8.active .ready-item:nth-child(4) { opacity: 1; transform: translateX(0); transition: all 0.5s ease 1.75s; }
+
+  /* S9 */
+  #s9 { background: var(--black); align-items: flex-start; padding: 60px 80px; }
+  #s9 .rem-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 36px; opacity: 0; transition: all 0.5s ease 0.2s; }
+  #s9.active .rem-label { opacity: 1; }
+  #s9 .rem-timeline { display: flex; gap: 0; width: 100%; max-width: 860px; position: relative; }
+  #s9 .rem-timeline::before { content: ''; position: absolute; top: 20px; left: 0; right: 0; height: 1px; background: var(--grey); }
+  #s9 .rem-col { flex: 1; padding: 0 24px; opacity: 0; transform: translateY(20px); }
+  #s9.active .rem-col:nth-child(1) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.5s; }
+  #s9.active .rem-col:nth-child(2) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 0.8s; }
+  #s9.active .rem-col:nth-child(3) { opacity: 1; transform: translateY(0); transition: all 0.5s ease 1.1s; }
+  #s9 .rem-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 20px; position: relative; z-index: 1; }
+  #s9 .rem-col:nth-child(1) .rem-dot { background: var(--red); }
+  #s9 .rem-col:nth-child(2) .rem-dot { background: var(--gold); }
+  #s9 .rem-col:nth-child(3) .rem-dot { background: var(--grey-light); }
+  #s9 .rem-horizon { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+  #s9 .rem-col:nth-child(1) .rem-horizon { color: var(--red); }
+  #s9 .rem-col:nth-child(2) .rem-horizon { color: var(--gold); }
+  #s9 .rem-col:nth-child(3) .rem-horizon { color: var(--grey-light); }
+  #s9 .rem-actions { display: flex; flex-direction: column; gap: 10px; }
+  #s9 .rem-action { font-size: 13px; font-weight: 300; color: var(--grey-light); line-height: 1.5; padding-left: 12px; border-left: 2px solid var(--grey); }
+
+  /* ============================================================ */
+  /* SCENE 10 — CTA — FULLY REBUILT */
+  /* ============================================================ */
+  #s10 { background: var(--black); justify-content: center; }
+  #s10::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(200,64,42,0.08) 0%, transparent 70%); pointer-events: none; }
+  #s10 .cta-inner { display: flex; flex-direction: column; align-items: center; gap: 0; position: relative; z-index: 2; width: 100%; max-width: 700px; }
+  #s10 .cta-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--grey-light); text-transform: uppercase; margin-bottom: 24px; opacity: 0; transition: all 0.5s ease 0.3s; }
+  #s10.active .cta-eyebrow { opacity: 1; }
+  #s10 .cta-headline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 8vw, 108px); text-align: center; line-height: 0.95; opacity: 0; transform: translateY(24px); transition: all 0.8s ease 0.6s; margin-bottom: 20px; }
+  #s10.active .cta-headline { opacity: 1; transform: translateY(0); }
+  #s10 .cta-sub { font-size: 16px; font-weight: 300; color: var(--grey-light); text-align: center; line-height: 1.65; max-width: 520px; opacity: 0; transition: all 0.6s ease 1.1s; margin-bottom: 32px; }
+  #s10.active .cta-sub { opacity: 1; }
+
+  /* VAULT CREDENTIAL LINE */
+  #s10 .vault-credential { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 28px; opacity: 0; transition: all 0.5s ease 1.3s; padding: 8px 20px; border: 1px solid rgba(184,151,58,0.25); }
+  #s10.active .vault-credential { opacity: 1; }
+
+  /* PAYMENT BUTTON — SECURE AUDIT WINDOW */
+  #s10 .payment-btn-wrap { width: 100%; margin-bottom: 16px; opacity: 0; transition: all 0.6s ease 1.5s; }
+  #s10.active .payment-btn-wrap { opacity: 1; }
+  #s10 .payment-btn { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 22px 32px; background: var(--red); color: var(--white); font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border: none; transition: background 0.3s; text-decoration: none; position: relative; overflow: hidden; }
+  #s10 .payment-btn:hover { background: #a83420; }
+  #s10 .payment-btn .btn-left { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  #s10 .payment-btn .btn-label { font-size: 10px; letter-spacing: 4px; color: rgba(245,240,232,0.6); }
+  #s10 .payment-btn .btn-main { font-size: 14px; letter-spacing: 2px; color: var(--white); }
+  #s10 .payment-btn .btn-price { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; color: var(--white); letter-spacing: 2px; }
+  #s10 .payment-btn .btn-arrow { font-size: 24px; opacity: 0.7; }
+
+  /* BANK DETAIL MODAL */
+  #bank-modal { display: none; position: fixed; inset: 0; background: rgba(8,8,8,0.95); z-index: 2000; justify-content: center; align-items: center; }
+  #bank-modal.open { display: flex; }
+  .bank-box { background: #0f0f0f; border: 1px solid var(--grey); padding: 48px; max-width: 560px; width: 90%; position: relative; }
+  .bank-close { position: absolute; top: 20px; right: 24px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--grey-light); cursor: pointer; text-transform: uppercase; }
+  .bank-close:hover { color: var(--white); }
+  .bank-header { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+  .bank-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; margin-bottom: 6px; }
+  .bank-amount { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 3px; color: var(--gold); margin-bottom: 32px; }
+  .bank-fields { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+  .bank-field { display: flex; flex-direction: column; gap: 4px; }
+  .bank-field-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--grey-light); }
+  .bank-field-value { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--white); letter-spacing: 1px; padding: 10px 14px; background: var(--grey); border: 1px solid #333; cursor: pointer; transition: border-color 0.2s; }
+  .bank-field-value:hover { border-color: var(--gold); }
+  .bank-note { font-size: 12px; font-weight: 300; color: var(--grey-light); line-height: 1.7; border-top: 1px solid var(--grey); padding-top: 20px; }
+  .bank-note strong { color: var(--white); }
+  .copy-toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--black); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; padding: 10px 24px; z-index: 3000; display: none; }
+  .copy-toast.show { display: block; }
+
+  /* EMAIL FALLBACK */
+  #s10 .cta-email-alt { display: flex; align-items: center; gap: 16px; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 2px; color: var(--grey-light); padding: 14px 24px; border: 1px solid var(--grey); width: 100%; justify-content: center; opacity: 0; transition: all 0.5s ease 1.7s; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+  #s10.active .cta-email-alt { opacity: 1; }
+  #s10 .cta-email-alt:hover { border-color: var(--grey-light); color: var(--white); }
+  #s10 .cta-email-alt span { color: var(--grey-mid); }
+
+  /* LEAD MAGNET STRIP */
+  #s10 .lead-magnet { margin-top: 20px; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border: 1px solid rgba(184,151,58,0.3); opacity: 0; transition: all 0.5s ease 1.9s; text-decoration: none; cursor: pointer; }
+  #s10.active .lead-magnet { opacity: 1; }
+  #s10 .lead-magnet:hover { border-color: var(--gold); }
+  #s10 .lm-left { display: flex; flex-direction: column; gap: 3px; }
+  #s10 .lm-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
+  #s10 .lm-title { font-size: 13px; font-weight: 300; color: var(--white); }
+  #s10 .lm-right { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--grey-light); text-transform: uppercase; }
+
+  /* FOOTER LINE */
+  #s10 .cta-footer { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 4px; opacity: 0; transition: all 0.5s ease 2.1s; }
+  #s10.active .cta-footer { opacity: 1; }
+  #s10 .cta-axiom { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--grey-mid); text-transform: uppercase; }
+  #s10 .cta-tagline { font-size: 12px; font-weight: 300; color: var(--grey-mid); }
+
+  /* NAV */
+  #nav { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 200; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--grey-mid); cursor: pointer; transition: all 0.3s ease; }
+  .nav-dot.active { background: var(--red); transform: scale(1.4); }
+  #hint { position: fixed; bottom: 32px; right: 40px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; color: var(--grey-mid); text-transform: uppercase; z-index: 200; }
+  #counter { position: fixed; top: 32px; right: 40px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px; color: var(--grey-mid); z-index: 200; }
+  #logo { position: fixed; top: 32px; left: 40px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 6px; color: var(--grey-mid); text-transform: uppercase; z-index: 200; }
+
+  @media(max-width:768px) {
+    .scene { padding: 32px 24px; }
+    #s2 { flex-direction: column; gap: 24px; }
+    #s5 { padding: 40px 24px; }
+    #s7 .pillars-grid { flex-wrap: wrap; }
+    #s7 .pillar { min-width: 120px; }
+    #s8 { flex-direction: column; gap: 32px; }
+    #s8 .ready-score-big { font-size: 100px; }
+    #s9 { padding: 40px 24px; }
+    #s9 .rem-timeline { flex-direction: column; gap: 32px; }
+    #s10 .payment-btn .btn-price { font-size: 28px; }
+    .bank-box { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div id="progress-bar"></div>
+<div id="logo">Axiom Forensics</div>
+<div id="counter">01 / 10</div>
+<div id="hint">← → to navigate</div>
+
+<!-- COPY TOAST -->
+<div class="copy-toast" id="copy-toast">Copied to clipboard</div>
+
+<!-- BANK DETAIL MODAL -->
+<div id="bank-modal">
+  <div class="bank-box">
+    <div class="bank-close" onclick="closeBank()">✕ Close</div>
+    <div class="bank-header">Meridian Forensic Audit · Secure Payment Window</div>
+    <div class="bank-title">EUR Bank Transfer</div>
+    <div class="bank-amount">€4,950 · Non-Refundable Deposit · AFP-AUD-001</div>
+    <div class="bank-fields">
+      <div class="bank-field">
+        <div class="bank-field-label">Account Holder</div>
+        <div class="bank-field-value" onclick="copyField(this)">Prince Joseph Kalu</div>
+      </div>
+      <div class="bank-field">
+        <div class="bank-field-label">IBAN</div>
+        <div class="bank-field-value" onclick="copyField(this)">GB84CLJU04130736675743</div>
+      </div>
+      <div class="bank-field">
+        <div class="bank-field-label">Swift / BIC</div>
+        <div class="bank-field-value" onclick="copyField(this)">CLJUGB21XXX</div>
+      </div>
+      <div class="bank-field">
+        <div class="bank-field-label">Bank Name</div>
+        <div class="bank-field-value" onclick="copyField(this)">Clear Junction Limited</div>
+      </div>
+      <div class="bank-field">
+        <div class="bank-field-label">Reference — Required</div>
+        <div class="bank-field-value" onclick="copyField(this)" style="color:var(--gold)">MERIDIAN-2026</div>
+      </div>
+    </div>
+    <div class="bank-note">
+      <strong>After transfer:</strong> Email your payment confirmation to audit@axiomforensics.cloud with subject line <strong>MERIDIAN DEPOSIT CONFIRMED</strong>. Your Evidence Request List and Secure Evidence Vault access will be issued within 4 hours. All audits conducted under end-to-end encrypted Evidence Vault protocol. Zero-call engagement enforced.
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 1 -->
+<div class="scene active" id="s1">
+  <div class="eyebrow">EU AI Act · Regulation 2024/1689 · Ireland</div>
+  <div class="headline">Your AI is a<br><span>€15M</span><br>Liability Trap</div>
+  <div class="sub">And you probably don't know it yet.</div>
+  <div class="axiom-logo">Axiom Forensics · Meridian Forensic Audit</div>
+</div>
+
+<!-- SCENE 2 -->
+<div class="scene" id="s2">
+  <div class="law-number">2024</div>
+  <div class="law-text">
+    <div class="law-label">Regulation (EU) 2024/1689 · Now Enforced</div>
+    <div class="law-body">The EU AI Act is <strong>not a future problem.</strong><br>If your business uses AI to make decisions about people — credit, hiring, insurance, access — you are already subject to it.</div>
+    <div class="law-fine">Article 99 Fines<span>Up to €15,000,000 · or 3% of global turnover</span></div>
+  </div>
+</div>
+
+<!-- SCENE 3 -->
+<div class="scene" id="s3">
+  <div class="question">Are You Exposed?</div>
+  <div class="checklist">
+    <div class="check-item"><div class="dot"></div>You use AI in credit, lending, or financial decisions</div>
+    <div class="check-item"><div class="dot"></div>You automate hiring screening or HR evaluation</div>
+    <div class="check-item"><div class="dot"></div>You use AI in insurance risk or benefits decisions</div>
+    <div class="check-item"><div class="dot"></div>You deploy AI that affects access to essential services</div>
+  </div>
+  <div class="warning">↑ All of the above are High-Risk under Annex III</div>
+</div>
+
+<!-- SCENE 4 -->
+<div class="scene" id="s4">
+  <div class="score-label">Axiom Oversight Metric · Live Audit Result</div>
+  <div class="score-ring-wrap">
+    <svg class="ring" viewBox="0 0 240 240">
+      <circle class="ring-bg" cx="120" cy="120" r="110"/>
+      <circle class="ring-fill" cx="120" cy="120" r="110"/>
+    </svg>
+    <div class="score-inner">
+      <div class="score-num">41</div>
+      <div class="score-denom">/ 100</div>
+    </div>
+  </div>
+  <div class="score-band">Material Risk Band</div>
+  <div class="score-desc">A real Irish fintech was audited. This is their actual score. High probability of failing a National AI Office inquiry.</div>
+</div>
+
+<!-- SCENE 5 -->
+<div class="scene" id="s5">
+  <div class="finds-label">Critical Findings · Forensic Audit AXM-2026-IRL-FT-001</div>
+  <div class="find-row">
+    <div class="find-ref">F-001</div>
+    <div class="find-content">
+      <div class="find-title">No Linked Decision Logs</div>
+      <div class="find-body">Human-review logs and AI decision logs stored in separate systems with no shared event ID. Intervention cannot be proven.</div>
+    </div>
+    <div class="find-badge">Critical · Art. 12</div>
+  </div>
+  <div class="find-row">
+    <div class="find-ref">F-002</div>
+    <div class="find-content">
+      <div class="find-title">No Named Oversight Person</div>
+      <div class="find-body">Oversight assigned to a shared team inbox. No individual designated as Article 14(4) authority. Forensically anonymous.</div>
+    </div>
+    <div class="find-badge">Critical · Art. 14</div>
+  </div>
+  <div class="find-row">
+    <div class="find-ref">F-003</div>
+    <div class="find-content">
+      <div class="find-title">Zero Human Overrides in 90 Days</div>
+      <div class="find-body">378,000 decisions reviewed. 100% approved by AI. Passive monitoring — not human oversight — confirmed.</div>
+    </div>
+    <div class="find-badge">Critical · Art. 14</div>
+  </div>
+</div>
+
+<!-- SCENE 6 -->
+<div class="scene" id="s6">
+  <div class="exp-tag">Maximum Concurrent Exposure · Article 99(3)</div>
+  <div class="exp-amount">€15,000,000</div>
+  <div class="exp-sub">Three independent, cumulative violations. Each finding = a separate fine.</div>
+  <div class="exp-line"></div>
+  <div class="exp-note">This does not include <strong>Central Bank of Ireland</strong> supervisory action, reputational damage, or civil claims from affected data subjects.</div>
+</div>
+
+<!-- SCENE 7 -->
+<div class="scene" id="s7">
+  <div class="pill-label">Axiom Oversight Metric · 5 Forensic Pillars</div>
+  <div class="pillars-grid">
+    <div class="pillar"><div class="pillar-score low">6</div><div class="pillar-denom">/ 20</div><div class="pillar-bar-wrap"><div class="pillar-bar"></div></div><div class="pillar-name">Intervention Architecture</div></div>
+    <div class="pillar"><div class="pillar-score low">9</div><div class="pillar-denom">/ 20</div><div class="pillar-bar-wrap"><div class="pillar-bar"></div></div><div class="pillar-name">Log Integrity & Traceability</div></div>
+    <div class="pillar"><div class="pillar-score low">8</div><div class="pillar-denom">/ 20</div><div class="pillar-bar-wrap"><div class="pillar-bar"></div></div><div class="pillar-name">Comprehensibility Assurance</div></div>
+    <div class="pillar"><div class="pillar-score low">5</div><div class="pillar-denom">/ 20</div><div class="pillar-bar-wrap"><div class="pillar-bar"></div></div><div class="pillar-name">Scope & Role Assignment</div></div>
+    <div class="pillar"><div class="pillar-score mid">13</div><div class="pillar-denom">/ 20</div><div class="pillar-bar-wrap"><div class="pillar-bar mid"></div></div><div class="pillar-name">Feedback Loop Integration</div></div>
+  </div>
+</div>
+
+<!-- SCENE 8 -->
+<div class="scene" id="s8">
+  <div class="ready-left">
+    <div class="ready-score-big">38</div>
+    <div class="ready-label">/ 100 Readiness</div>
+    <div class="ready-verdict">Not Ready</div>
+  </div>
+  <div class="ready-right">
+    <div class="ready-title">If the National AI Office called today, this company could not respond within 72 hours.</div>
+    <div class="ready-items">
+      <div class="ready-item"><div class="cross">✕</div>No named Article 14(4) oversight authority on file</div>
+      <div class="ready-item"><div class="cross">✕</div>Annex IV technical documentation incomplete — items 3 & 5 missing</div>
+      <div class="ready-item"><div class="cross">✕</div>Zero evidence of human intervention in AI decisions</div>
+      <div class="ready-item"><div class="cross">✕</div>No post-market monitoring plan — 22 months in production</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 9 -->
+<div class="scene" id="s9">
+  <div class="rem-label">Remediation Roadmap · 30 / 60 / 90 Days</div>
+  <div class="rem-timeline">
+    <div class="rem-col">
+      <div class="rem-dot"></div>
+      <div class="rem-horizon">30 Days · Critical</div>
+      <div class="rem-actions">
+        <div class="rem-action">Designate named Article 14(4) oversight authority</div>
+        <div class="rem-action">Implement shared event ID across decision & review logs</div>
+        <div class="rem-action">Establish documented override / escalation pathway</div>
+      </div>
+    </div>
+    <div class="rem-col">
+      <div class="rem-dot"></div>
+      <div class="rem-horizon">60 Days · High</div>
+      <div class="rem-actions">
+        <div class="rem-action">Surface AI confidence scores to reviewer interface</div>
+        <div class="rem-action">Complete Annex IV items 3 and 5</div>
+        <div class="rem-action">Route individual reviewer feedback to model governance</div>
+      </div>
+    </div>
+    <div class="rem-col">
+      <div class="rem-dot"></div>
+      <div class="rem-horizon">90 Days · Material</div>
+      <div class="rem-actions">
+        <div class="rem-action">Complete post-market monitoring plan (Art. 72)</div>
+        <div class="rem-action">Conduct first documented oversight drill</div>
+        <div class="rem-action">Schedule re-audit · Axiom Forensics</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 10 — REBUILT CTA -->
+<div class="scene" id="s10">
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Meridian Forensic Audit · AFP-AUD-001</div>
+    <div class="cta-headline">Know Your<br>Forensic<br>Position.</div>
+    <div class="cta-sub">The Meridian Audit delivers your AOM Score, three forensic findings, a 30/60/90 remediation roadmap, and a regulator-ready report. Asynchronous. Documented. Delivered in 72 hours.</div>
+
+    <div class="vault-credential">All audits conducted via end-to-end encrypted Evidence Vaults · Zero-call protocol enforced</div>
+
+    <div class="payment-btn-wrap">
+      <button class="payment-btn" onclick="openBank()">
+        <div class="btn-left">
+          <div class="btn-label">Secure Audit Window · Non-Refundable Deposit</div>
+          <div class="btn-main">Initiate Meridian Forensic Audit</div>
+        </div>
+        <div class="btn-price">€4,950 →</div>
+      </button>
+    </div>
+
+    <a class="cta-email-alt" href="mailto:audit@axiomforensics.cloud?subject=Meridian Forensic Audit Enquiry&body=Organisation:%0D%0ARole:%0D%0AAI systems in use:%0D%0APreferred timeline:">
+      <span>or</span> audit@axiomforensics.cloud
+    </a>
+
+    <a class="lead-magnet" href="/Axiom_HR_Technical_Stress_Test.pdf" target="_blank" download>
+      <div class="lm-left">
+        <div class="lm-label">Free Lead Magnet · AFP-DRILL-HR-001</div>
+        <div class="lm-title">HR AI Technical Stress Test — Run It Before We Do</div>
+      </div>
+      <div class="lm-right">Download PDF →</div>
+    </a>
+
+    <div class="cta-footer">
+      <div class="cta-axiom">Axiom Forensics · axiomforensics.cloud</div>
+      <div class="cta-tagline">Meridian Forensic Audit · EU AI Act · Ireland & EU</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV DOTS -->
+<div id="nav">
+  <div class="nav-dot active" onclick="goTo(0)"></div>
+  <div class="nav-dot" onclick="goTo(1)"></div>
+  <div class="nav-dot" onclick="goTo(2)"></div>
+  <div class="nav-dot" onclick="goTo(3)"></div>
+  <div class="nav-dot" onclick="goTo(4)"></div>
+  <div class="nav-dot" onclick="goTo(5)"></div>
+  <div class="nav-dot" onclick="goTo(6)"></div>
+  <div class="nav-dot" onclick="goTo(7)"></div>
+  <div class="nav-dot" onclick="goTo(8)"></div>
+  <div class="nav-dot" onclick="goTo(9)"></div>
+</div>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+
+  // Scene navigation
+  const scenes = document.querySelectorAll('.scene');
+  const dots = document.querySelectorAll('.nav-dot');
+  const counter = document.getElementById('counter');
+  const progressBar = document.getElementById('progress-bar');
+  let current = 0;
+
+  function goTo(index) {
+    scenes[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = Math.max(0, Math.min(index, scenes.length - 1));
+    scenes[current].classList.add('active');
+    dots[current].classList.add('active');
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + scenes.length;
+    progressBar.style.width = ((current + 1) / scenes.length * 100) + '%';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (dx < -50) goTo(current + 1);
+    if (dx > 50) goTo(current - 1);
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#nav') && !e.target.closest('#s10') && !e.target.closest('#bank-modal')) {
+      goTo(current + 1);
+    }
+  });
+
+  // Bank modal
+  function openBank() { document.getElementById('bank-modal').classList.add('open'); }
+  function closeBank() { document.getElementById('bank-modal').classList.remove('open'); }
+  document.getElementById('bank-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeBank();
+  });
+
+  // Copy to clipboard
+  function copyField(el) {
+    const text = el.textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const toast = document.getElementById('copy-toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  }
+</script>
+</body>
+</html>
